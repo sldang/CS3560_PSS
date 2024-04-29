@@ -9,8 +9,8 @@
         <module name="CS3560_PSS" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="CS3560_PSS" target="22" />
+    <bytecodeTargetLevel target="17">
+      <module name="CS3560_PSS" target="21" />
     </bytecodeTargetLevel>
   </component>
 </project>
