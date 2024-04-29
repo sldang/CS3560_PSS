@@ -1,3 +1,5 @@
+import org.json.JSONArray;
+import org.json.JSONException;
 import java.io.*;
 
 public class FileSaving {
@@ -5,7 +7,7 @@ public class FileSaving {
     private static FileSaving instance;
 
     private FileSaving() {
-        //constructor
+        // Private constructor to prevent instantiation
     }
 
     public static FileSaving getInstance() {
@@ -15,28 +17,29 @@ public class FileSaving {
         return instance;
     }
 
-    public void writeToFile(String fileName, String content) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
-            writer.write(content);
-            writer.newLine(); // Ensures each content addition is on a new line
+    public void writeToFile(String fileName, JSONArray jsonArray) {
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName, true)))) {
+            out.write(jsonArray.toString(4)); // Writing the JSONArray to file with indentation for readability
         } catch (IOException e) {
-            // Handle exceptions properly in your application context
             e.printStackTrace();
         }
     }
 
-    public void readFromFile(String fileName) {
+    public JSONArray readFromFile(String fileName) {
+        StringBuilder jsonData = new StringBuilder();
+        String line;
+
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-            String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+                jsonData.append(line);
             }
+            return new JSONArray(jsonData.toString());
         } catch (FileNotFoundException e) {
             System.out.println("File not found: " + fileName);
-            // Handle exception, perhaps return an error or throw a custom exception
-        } catch (IOException e) {
-            // Handle exceptions properly in your application context
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
+        return new JSONArray(); // Return an empty JSONArray if there was an error
     }
- }
+}
+
