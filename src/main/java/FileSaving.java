@@ -1,17 +1,15 @@
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.*;
+import java.util.LinkedList;
+import java.util.List;
 
-//Used this link for help: https://www.baeldung.com/java-org-json
 public class FileSaving {
 
     private static FileSaving instance;
 
-    private FileSaving() {
-        // Private constructor to prevent instantiation
-    }
+    private FileSaving() { }
 
     public static FileSaving getInstance() {
         if (instance == null) {
@@ -20,36 +18,24 @@ public class FileSaving {
         return instance;
     }
 
-        public void writeToFile(String fileName, JSONObject newJsonObject) {
+    public void writeTasksToFile(String fileName, List<Task> newTasks) {
         File file = new File(fileName);
-        JSONArray jsonArray = new JSONArray();
+        JSONArray existingTasks = readFromFile(fileName); // Load the existing JSON array from the file
 
-        // Read the existing content of the file into a JSONArray
-        if (file.exists() && file.length() != 0) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-                String jsonData = "";
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    jsonData += line;
-                }
-                jsonArray = new JSONArray(jsonData); // Load the existing JSON array from the file
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        // Convert new tasks to JSON and append them to the existing JSON array
+        for (Task task : newTasks) {
+            existingTasks.put(toJSONObject(task));
         }
 
-        // Add the new JSON object to the JSONArray
-        jsonArray.put(newJsonObject);
-
-        // Write the updated JSONArray back to the file
+        // Write the updated JSON array back to the file
         try (PrintWriter out = new PrintWriter(new FileWriter(file))) {
-            out.write(jsonArray.toString(4)); // Writing with indentation for readability
+            out.write(existingTasks.toString(4)); // Writing with indentation for readability
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public JSONArray readFromFile(String fileName) {
+        public JSONArray readFromFile(String fileName) {
         StringBuilder jsonData = new StringBuilder();
         String line;
 
@@ -65,5 +51,22 @@ public class FileSaving {
         }
         return new JSONArray(); // Return an empty JSONArray if there was an error
     }
+
+    private JSONObject toJSONObject(Task task) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("Name", task.getName());
+        jsonObject.put("Type", task.getType());
+        jsonObject.put("StartDate", task.getStartDate());
+        jsonObject.put("StartTime", task.getStartTime());
+        jsonObject.put("Duration", task.getDuration());
+        if (task.getEndDate() != 0) {
+            jsonObject.put("EndDate", task.getEndDate());
+        }
+        // Add more fields if necessary, especially handling optional fields and linked tasks
+        return jsonObject;
+    }
 }
+
+
+
 
