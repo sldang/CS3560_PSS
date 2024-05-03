@@ -2,6 +2,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.*;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class FileSaving {
 
     public void writeTasksToFile(String fileName, List<Task> newTasks) {
         File file = new File(fileName);
-        JSONArray existingTasks = readFromFile(fileName); // Load the existing JSON array from the file
+        JSONArray existingTasks = readJSONArrayFromFile(fileName); // Load the existing JSON array from the file
 
         // Convert new tasks to JSON and append them to the existing JSON array
         for (Task task : newTasks) {
@@ -35,7 +36,26 @@ public class FileSaving {
         }
     }
 
-        public JSONArray readFromFile(String fileName) {
+    public List<Task> readFromFile(String fileName) {
+        JSONArray readArray = readJSONArrayFromFile(fileName);
+        List<Task> task = new LinkedList<>();
+        Iterator<Object> arrayIterator = readArray.iterator();
+        while (arrayIterator.hasNext()){
+            JSONObject working = (JSONObject) arrayIterator.next();
+            String type = working.getString("Type");
+            String translatedType = TaskFactory.getTranslation(type);
+
+            Task newTask = TaskFactory.getInstance().createTask(translatedType);
+
+            newTask.setName(working.getString("Name"));
+            newTask.setStartDate(working.getInt("StartDate"));
+
+
+        }
+        return null;
+    }
+
+    private JSONArray readJSONArrayFromFile(String fileName) {
         StringBuilder jsonData = new StringBuilder();
         String line;
 
