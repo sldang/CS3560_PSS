@@ -2,14 +2,15 @@ import java.util.List;
 
 public class TaskSchedule {
 
-    ScheduleLinkedList schedule;
-    TaskSchedule instance;
+    private ScheduleLinkedList schedule;
+    private static TaskSchedule instance;
+    private int currentYear = 0;
 
     private TaskSchedule(){
 
     }
 
-    public TaskSchedule getInstance(){
+    public static TaskSchedule getInstance(){
         if (instance == null){
             instance = new TaskSchedule();
         }
@@ -45,5 +46,17 @@ public class TaskSchedule {
     //FIXME: This might be changed with implementation of ScheduleLinkedList.java, or however we want to save it.
     public void setSchedule(ScheduleLinkedList list){
 
+    }
+
+    public List<Task> getTimeFrame(int startDate, int endDate){
+        return null;
+    }
+
+    public int getCurrentYear() {
+        return currentYear;
+    }
+
+    public void setCurrentYear(int currentYear) {
+        this.currentYear = currentYear;
     }
 }
