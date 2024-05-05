@@ -27,6 +27,7 @@ public interface Task {
    void addLinkedTask(Task task);
 
    JSONObject toJSONObject();
+   void fromJSONObject(JSONObject jsonObject);
 }
 
 
@@ -46,7 +47,7 @@ class RecurringTask implements Task {
     }
 
     // Constructor from JSONObject
-    public RecurringTask(JSONObject jsonObject){
+    public void fromJSONObject(JSONObject jsonObject){
         name = jsonObject.getString("Name");
         type = jsonObject.getString("Type");
         startDate = jsonObject.getInt("StartDate");
@@ -162,7 +163,7 @@ class TransientTask implements Task {
     }
 
     // Constructor from JSONObject
-    public TransientTask(JSONObject jsonObject){
+    public void fromJSONObject(JSONObject jsonObject){
         name = jsonObject.getString("Name");
         type = jsonObject.getString("Type");
         date = jsonObject.getInt("Date");
@@ -271,7 +272,7 @@ class AntiTask implements Task {
     
     }
 
-    public AntiTask(JSONObject jsonObject){
+    public void fromJSONObject(JSONObject jsonObject){
         name = jsonObject.getString("Name");
         type = jsonObject.getString("Type");
         startDate = jsonObject.getInt("StartDate");

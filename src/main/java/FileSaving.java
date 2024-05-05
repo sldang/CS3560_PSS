@@ -42,15 +42,18 @@ public class FileSaving {
         Iterator<Object> arrayIterator = readArray.iterator();
         while (arrayIterator.hasNext()){
             JSONObject working = (JSONObject) arrayIterator.next();
+
+            /**
+             * @FIXME There should be a better way to do this rather than extracting data and applying operations on it
+             * Either the Factory or the Task should handle what type it is - Alex
+            **/
             String type = working.getString("Type");
             String translatedType = TaskFactory.getTranslation(type);
 
             Task newTask = TaskFactory.getInstance().createTask(translatedType);
+            newTask.fromJSONObject(working);
 
-            newTask.setName(working.getString("Name"));
-            newTask.setStartDate(working.getInt("StartDate"));
-
-
+            task.add(newTask); //@FIXME Are tasks saved sequentially? - Alex
         }
         return null;
     }
