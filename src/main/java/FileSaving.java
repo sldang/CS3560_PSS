@@ -25,7 +25,7 @@ public class FileSaving {
 
         // Convert new tasks to JSON and append them to the existing JSON array
         for (Task task : newTasks) {
-            existingTasks.put(toJSONObject(task));
+            existingTasks.put(task.toJSONObject());
         }
 
         // Write the updated JSON array back to the file
@@ -70,20 +70,6 @@ public class FileSaving {
             e.printStackTrace();
         }
         return new JSONArray(); // Return an empty JSONArray if there was an error
-    }
-
-    private JSONObject toJSONObject(Task task) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("Name", task.getName());
-        jsonObject.put("Type", task.getType());
-        jsonObject.put("StartDate", task.getStartDate());
-        jsonObject.put("StartTime", task.getStartTime());
-        jsonObject.put("Duration", task.getDuration());
-        if (task.getEndDate() != 0) {
-            jsonObject.put("EndDate", task.getEndDate());
-        }
-        // Add more fields if necessary, especially handling optional fields and linked tasks
-        return jsonObject;
     }
 }
 

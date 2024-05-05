@@ -1,7 +1,10 @@
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public interface Task {
+
    String getName();
    void setName(String name);
 
@@ -22,6 +25,8 @@ public interface Task {
 
    List<Task> getLinkedTasks();
    void addLinkedTask(Task task);
+
+   JSONObject toJSONObject();
 }
 
 
@@ -32,11 +37,37 @@ class RecurringTask implements Task {
     private float duration;
     private int startDate;
     private int endDate;
+    private int frequency;
     private List<Task> linkedTasks;
 
     // Contructor
     public RecurringTask() {
         linkedTasks = new ArrayList<>();
+    }
+
+    // Constructor from JSONObject
+    public RecurringTask(JSONObject jsonObject){
+        name = jsonObject.getString("Name");
+        type = jsonObject.getString("Type");
+        startDate = jsonObject.getInt("StartDate");
+        startTime = jsonObject.getFloat("StartTime");
+        duration = jsonObject.getFloat("Duration");
+        endDate = jsonObject.getInt("EndDate");
+        frequency = jsonObject.getInt("Frequency");
+    }
+
+    public JSONObject toJSONObject(){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("Name", this.getName());
+        jsonObject.put("Type", this.getType());
+        jsonObject.put("StartDate", this.getStartDate());
+        jsonObject.put("StartTime", this.getStartTime());
+        jsonObject.put("Duration", this.getDuration());
+        jsonObject.put("EndDate", this.getEndDate());
+        jsonObject.put("Frequency", this.getFrequency());
+
+        // Add more fields if necessary, especially handling optional fields and linked tasks
+        return jsonObject;
     }
 
     @Override
@@ -109,6 +140,13 @@ class RecurringTask implements Task {
         linkedTasks.add(task);
     }
 
+    public int getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(int frequency) {
+        this.frequency = frequency;
+    }
 }
 
 class TransientTask implements Task {
@@ -116,11 +154,32 @@ class TransientTask implements Task {
     private String type;
     private float startTime;
     private float duration;
-    private int startDate;
+    private int date;
 
     // Contructor
     public TransientTask() {
     
+    }
+
+    // Constructor from JSONObject
+    public TransientTask(JSONObject jsonObject){
+        name = jsonObject.getString("Name");
+        type = jsonObject.getString("Type");
+        date = jsonObject.getInt("Date");
+        startTime = jsonObject.getFloat("StartTime");
+        duration = jsonObject.getFloat("Duration");
+    }
+
+    public JSONObject toJSONObject(){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("Name", this.getName());
+        jsonObject.put("Type", this.getType());
+        jsonObject.put("Date", this.getStartDate());
+        jsonObject.put("StartTime", this.getStartTime());
+        jsonObject.put("Duration", this.getDuration());
+
+        // Add more fields if necessary, especially handling optional fields and linked tasks
+        return jsonObject;
     }
 
     @Override
@@ -165,12 +224,12 @@ class TransientTask implements Task {
 
     @Override
     public int getStartDate() {
-        return startDate;
+        return date;
     }
 
     @Override
     public void setStartDate(int startDate) {
-        this.startDate = startDate;
+        this.date = startDate;
     }
 
     @Override
@@ -210,6 +269,26 @@ class AntiTask implements Task {
     // Contructor
     public AntiTask() {
     
+    }
+
+    public AntiTask(JSONObject jsonObject){
+        name = jsonObject.getString("Name");
+        type = jsonObject.getString("Type");
+        startDate = jsonObject.getInt("StartDate");
+        startTime = jsonObject.getFloat("StartTime");
+        duration = jsonObject.getFloat("Duration");
+    }
+
+    public JSONObject toJSONObject(){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("Name", this.getName());
+        jsonObject.put("Type", this.getType());
+        jsonObject.put("Date", this.getStartDate());
+        jsonObject.put("StartTime", this.getStartTime());
+        jsonObject.put("Duration", this.getDuration());
+
+        // Add more fields if necessary, especially handling optional fields and linked tasks
+        return jsonObject;
     }
 
     @Override
