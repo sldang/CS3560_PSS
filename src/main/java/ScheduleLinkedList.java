@@ -11,10 +11,13 @@ public class ScheduleLinkedList {
 
     public void addFirst(ScheduleNode scheduleNode) {
         if (scheduleNode != null) {
+            scheduleNode.setNext(null);
+    
             scheduleNode.setNext(head);
             head = scheduleNode;
         }
     }
+    
 
     public void addLast(ScheduleNode scheduleNode) {
         if (head == null) {
