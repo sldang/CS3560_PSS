@@ -44,6 +44,10 @@ public class ScheduleLinkedList {
     public ScheduleNode getScheduleNodeByName(String name) {
         return null;
     }
+
+    public ScheduleNode getHead(){
+        return null;
+    }
 }
 
 class ScheduleNode {
