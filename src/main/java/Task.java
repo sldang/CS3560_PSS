@@ -28,6 +28,14 @@ public interface Task {
 
    JSONObject toJSONObject();
    void fromJSONObject(JSONObject jsonObject);
+
+   int getDateInstance();
+   void setDateInstance(int date);
+
+   int getFrequency();
+   void setFrequency(int frequency);
+
+   Task getCopyOf();
 }
 
 
@@ -39,6 +47,7 @@ class RecurringTask implements Task {
     private int startDate;
     private int endDate;
     private int frequency;
+    private int dateInstance;
     private List<Task> linkedTasks;
 
     // Contructor
@@ -141,12 +150,38 @@ class RecurringTask implements Task {
         linkedTasks.add(task);
     }
 
+    @Override
     public int getFrequency() {
         return frequency;
     }
 
+    @Override
     public void setFrequency(int frequency) {
         this.frequency = frequency;
+    }
+
+    @Override
+    public Task getCopyOf() {
+        RecurringTask copyTask = new RecurringTask();
+        copyTask.setName(this.getName());
+        copyTask.setType(this.getType());
+        copyTask.setStartTime(this.getStartTime());
+        copyTask.setDuration(this.getDuration());
+        copyTask.setStartDate(this.getStartDate());
+        copyTask.setEndDate(this.getEndDate());
+        copyTask.setFrequency(this.getFrequency());
+
+        return copyTask;
+    }
+
+    @Override
+    public int getDateInstance() {
+        return dateInstance;
+    }
+
+    @Override
+    public void setDateInstance(int dateInstance) {
+        this.dateInstance = dateInstance;
     }
 }
 
@@ -234,6 +269,28 @@ class TransientTask implements Task {
     }
 
     @Override
+    public int getDateInstance() {
+        return date;
+    }
+
+    @Override
+    public void setDateInstance(int date) {
+        this.date = date;
+    }
+
+    @Override
+    public int getFrequency() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getFrequency'");
+    }
+
+    @Override
+    public void setFrequency(int frequency) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setFrequency'");
+    }
+
+    @Override
     public int getEndDate() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getEndDate'");
@@ -257,6 +314,17 @@ class TransientTask implements Task {
         throw new UnsupportedOperationException("Unimplemented method 'addLinkedTask'");
     }
 
+    @Override
+    public Task getCopyOf() {
+        TransientTask copyTask = new TransientTask();
+        copyTask.setName(this.getName());
+        copyTask.setType(this.getType());
+        copyTask.setStartTime(this.getStartTime());
+        copyTask.setDuration(this.getDuration());
+        copyTask.setStartDate(this.getStartDate());
+
+        return copyTask;
+    }
 }
 
 class AntiTask implements Task {
@@ -266,6 +334,7 @@ class AntiTask implements Task {
     private float duration;
     private int startDate;
     private List<Task> linkedTasks;
+    private int dateInstance;
 
     // Contructor
     public AntiTask() {
@@ -278,6 +347,38 @@ class AntiTask implements Task {
         startDate = jsonObject.getInt("StartDate");
         startTime = jsonObject.getFloat("StartTime");
         duration = jsonObject.getFloat("Duration");
+    }
+
+    @Override
+    public Task getCopyOf() {
+        AntiTask copyTask = new AntiTask();
+        copyTask.setName(this.getName());
+        copyTask.setType(this.getType());
+        copyTask.setStartTime(this.getStartTime());
+        copyTask.setDuration(this.getDuration());
+        copyTask.setStartDate(this.getStartDate());
+
+        return copyTask;
+    }
+
+    @Override
+    public int getDateInstance() {
+        return dateInstance;
+    }
+
+    @Override
+    public void setDateInstance(int date) {
+        this.dateInstance = date;
+    }
+
+    @Override
+    public int getFrequency() {
+        return 0;
+    }
+
+    @Override
+    public void setFrequency(int frequency) {
+
     }
 
     public JSONObject toJSONObject(){
@@ -363,4 +464,6 @@ class AntiTask implements Task {
     public void addLinkedTask(Task task) {
         linkedTasks.add(task);
     }
+
+
 }

@@ -53,6 +53,21 @@ public class DateCalculator {
         return new int[]{startDate, endDate};
     }
 
+    public static int addDaysToDate(int date, int days){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        Calendar calendar = new GregorianCalendar();
+        String dateString = String.valueOf(date);
+
+        //FIXME Note: Calendar uses 0-11 Format for Month when setting date
+        // Uses 1-31 for Day
+        calendar.set(
+                Integer.parseInt(dateString.substring(0,4)),
+                Integer.parseInt(dateString.substring(4,6)) - 1,
+                Integer.parseInt(dateString.substring(6,8)));
+        calendar.add(Calendar.DAY_OF_WEEK, days);
+        return Integer.parseInt(sdf.format(calendar.getTime()));
+    }
+
     public static String getMonthString(int month){
         String monthString = "";
         if (month < 10){
