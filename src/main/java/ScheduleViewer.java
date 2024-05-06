@@ -25,7 +25,8 @@ public class ScheduleViewer {
 
     // Assumes date is within week
     public void printWeekSchedule(int date) {
-        List<Task> weekTasks = TaskSchedule.getInstance().getTimeFrame(date, date);
+        int[] timeFrame = DateCalculator.getWeekDates(date);
+        List<Task> weekTasks = TaskSchedule.getInstance().getTimeFrame(timeFrame[0], timeFrame[1]);
     }
 
     public void printPeriodSchedule(int begin, int end) {
@@ -35,7 +36,8 @@ public class ScheduleViewer {
     //Note: Dates are integers in the form of YYYYMMDD
     //Month assumes current currentYear
     public void printMonthSchedule(int month) {
-        List<Task> monthTasks = TaskSchedule.getInstance().getTimeFrame(0, 0);
+        int[] timeFrame = DateCalculator.getMonthDates(month);
+        List<Task> tasksInFrame = TaskSchedule.getInstance().getTimeFrame(timeFrame[0], timeFrame[1]);
     }
 
     //TODO: work on this implementation

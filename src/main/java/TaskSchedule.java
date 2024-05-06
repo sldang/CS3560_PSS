@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskSchedule {
@@ -49,6 +50,8 @@ public class TaskSchedule {
     }
 
     public List<Task> getTimeFrame(int startDate, int endDate){
+        List<Task> tasksInTimeFrame = new ArrayList<>();
+        // FIXME: implementation
         return null;
     }
 
