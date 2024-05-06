@@ -65,7 +65,13 @@ public class TaskSchedule {
     }
 
     public void removeTask(Task task){
-
+        String name = task.getName();
+        ScheduleNode node = schedule.getHead();
+        while (node != null){
+            if (node.getNext() != null && node.getTask().getName().equals(name)){
+                node.setNext(node.getNext().getNext());
+            }
+        }
     }
 
     //@FIXME There should be a better way to handle this. Should we search by name? How do we edit? -Alex
@@ -73,8 +79,13 @@ public class TaskSchedule {
 
     }
 
-    public void findTaskByName(String name){
-
+    public Task findTaskByName(String name){
+        for (Task task: tasksGeneral){
+            if (task.getName().equals(name)){
+                return task;
+            }
+        }
+        return null;
     }
 
 
@@ -129,14 +140,12 @@ public class TaskSchedule {
         return false;
     }
 
-    //FIXME: This might be changed with implementation of ScheduleLinkedList.java, or however we want to view it.
     public List<Task> listAllTasks(){
-        return null;
+        return tasksGeneral;
     }
 
-    //FIXME: This might be changed with implementation of ScheduleLinkedList.java, or however we want to save it.
     public void setSchedule(ScheduleLinkedList list){
-
+        this.schedule = list;
     }
 
     public List<Task> getTimeFrame(int startDate, int endDate){
