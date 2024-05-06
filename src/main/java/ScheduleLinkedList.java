@@ -107,9 +107,6 @@ public class ScheduleLinkedList {
         return null;
     }
 
-    public ScheduleNode getHead(){
-        return null;
-    }
 
     public ScheduleNode getHead(){
         return null;
