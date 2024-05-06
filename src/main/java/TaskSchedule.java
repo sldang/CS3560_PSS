@@ -32,7 +32,7 @@ public class TaskSchedule {
             while (iteratedDate <= task.getEndDate()){
                 Task copiedTaskEvent = task.getCopyOf();
                 copiedTaskEvent.setDateInstance(iteratedDate);
-                ScheduleNode nodeToAdd = new ScheduleNode();
+                ScheduleNode nodeToAdd = new ScheduleNode(copiedTaskEvent);
                 nodeToAdd.setTask(copiedTaskEvent);
 
 
