@@ -6,8 +6,8 @@ import java.util.List;
 
 public class TaskSchedule {
 
-    private ScheduleLinkedList schedule; // This is a calendar map that represents each event in time
-    private List<Task> tasksGeneral; // This is a generalized list of all events (Recurrings are only listed once)
+    private ScheduleLinkedList schedule = new ScheduleLinkedList(); // This is a calendar map that represents each event in time
+    private List<Task> tasksGeneral = new ArrayList<>(); // This is a generalized list of all events (Recurrings are only listed once)
 
 
     private static TaskSchedule instance;
@@ -53,6 +53,12 @@ public class TaskSchedule {
                     nodeToAdd.setNext(iteratedEvent);
                 }
                 previousEvent = nodeToAdd;
+
+                if (frequency == 7){
+                    frequency = 1;
+                  } else {
+                    frequency = 7;
+                  }
 
                 iteratedDate = DateCalculator.addDaysToDate(iteratedDate, frequency);
             }

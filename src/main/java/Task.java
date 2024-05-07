@@ -281,7 +281,7 @@ class TransientTask implements Task {
     @Override
     public int getFrequency() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getFrequency'");
+        return 1;
     }
 
     @Override
@@ -293,7 +293,7 @@ class TransientTask implements Task {
     @Override
     public int getEndDate() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getEndDate'");
+        return 11111111;
     }
 
     @Override
@@ -305,7 +305,7 @@ class TransientTask implements Task {
     @Override
     public List<Task> getLinkedTasks() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getLinkedTasks'");
+        return new ArrayList<>();
     }
 
     @Override
@@ -446,7 +446,7 @@ class AntiTask implements Task {
     @Override
     public int getEndDate() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getEndDate'");
+        return 11111111;
     }
 
     @Override
