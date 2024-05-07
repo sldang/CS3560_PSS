@@ -191,6 +191,7 @@ public class TaskSchedule {
             int dateInstance = workingTask.getDateInstance();
             if (dateInstance >= startDate || dateInstance <= endDate){
                 tasksInTimeFrame.add(workingTask);
+                head = head.getNext();
             }
         }
         return tasksInTimeFrame;
