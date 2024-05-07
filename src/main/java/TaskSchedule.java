@@ -75,9 +75,26 @@ public class TaskSchedule {
     public void removeTask(Task task){
         String name = task.getName();
         ScheduleNode node = schedule.getHead();
+        ScheduleNode prevNode = null;
         while (node != null){
-            if (node.getNext() != null && node.getTask().getName().equals(name)){
-                node.setNext(node.getNext().getNext());
+            //System.out.println("Iterated through: " + node.getTask().getName());
+            if (node.getTask().getName().equals(name)){
+                if (prevNode != null){
+                    prevNode.setNext(node.getNext());
+                    node = node.getNext();
+                } else {
+                    schedule.removeFirst();
+                }
+            } else {
+                prevNode = node;
+                node = node.getNext();
+            }
+        }
+
+        for (int i = 0; i < tasksGeneral.size(); i++){
+            if (tasksGeneral.get(i).getName().equals(name)){
+                tasksGeneral.remove(i);
+                i--;
             }
         }
     }

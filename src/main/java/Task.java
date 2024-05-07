@@ -293,7 +293,7 @@ class TransientTask implements Task {
     @Override
     public int getEndDate() {
         // TODO Auto-generated method stub
-        return 11111111;
+        return getStartDate();
     }
 
     @Override
@@ -446,7 +446,7 @@ class AntiTask implements Task {
     @Override
     public int getEndDate() {
         // TODO Auto-generated method stub
-        return 11111111;
+        return getStartDate();
     }
 
     @Override
