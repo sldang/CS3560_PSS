@@ -3,8 +3,8 @@ import java.util.List;
 public class ScheduleViewer {
     private static ScheduleViewer instance;
 
-    // constructor
-    private ScheduleViewer(){
+    // Constructor
+    private ScheduleViewer() {
 
     }
 
@@ -15,37 +15,47 @@ public class ScheduleViewer {
         return instance;
     }
 
-    //FIXME: Do we want to have methods (inclusive, inclusive)? - Alex
-
-    //Note: Dates are integers in the form of YYYYMMDD
-
+    // Print the schedule for a single day
     public void printDaySchedule(int date) {
         List<Task> dayTasks = TaskSchedule.getInstance().getTimeFrame(date, date);
+        System.out.println("Day Schedule for " + date + ":");
+        printTasks(dayTasks);
     }
 
-    // Assumes date is within week
+    // Print the schedule for a whole week
     public void printWeekSchedule(int date) {
         int[] timeFrame = DateCalculator.getWeekDates(date);
         List<Task> weekTasks = TaskSchedule.getInstance().getTimeFrame(timeFrame[0], timeFrame[1]);
+        System.out.println("Week Schedule starting from " + timeFrame[0] + " to " + timeFrame[1] + ":");
+        printTasks(weekTasks);
     }
 
+    // Print the schedule for a specified period
     public void printPeriodSchedule(int begin, int end) {
         List<Task> periodTasks = TaskSchedule.getInstance().getTimeFrame(begin, end);
+        System.out.println("Period Schedule from " + begin + " to " + end + ":");
+        printTasks(periodTasks);
     }
 
-    //Note: Dates are integers in the form of YYYYMMDD
-    //Month assumes current currentYear
+    // Print the schedule for a whole month
     public void printMonthSchedule(int month) {
         int[] timeFrame = DateCalculator.getMonthDates(month);
         List<Task> tasksInFrame = TaskSchedule.getInstance().getTimeFrame(timeFrame[0], timeFrame[1]);
+        System.out.println("Month Schedule for month " + month + ":");
+        printTasks(tasksInFrame);
     }
 
-    //TODO: work on this implementation
-    private void printTasks(List<Task> tasks){
-        for (Task task: tasks){
-            System.out.println(task.getName());
+    // Print the tasks
+    private void printTasks(List<Task> tasks) {
+        if (tasks.isEmpty()) {
+            System.out.println("No tasks scheduled.");
+            return;
+        }
+        for (Task task : tasks) {
+            System.out.println("Task: " + task.getName() + " - Start Date: " + task.getStartDate());
         }
     }
-
 }
+
+
 
