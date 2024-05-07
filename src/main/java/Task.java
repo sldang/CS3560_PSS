@@ -344,7 +344,7 @@ class AntiTask implements Task {
     public void fromJSONObject(JSONObject jsonObject){
         name = jsonObject.getString("Name");
         type = jsonObject.getString("Type");
-        startDate = jsonObject.getInt("StartDate");
+        startDate = jsonObject.getInt("Date");
         startTime = jsonObject.getFloat("StartTime");
         duration = jsonObject.getFloat("Duration");
     }
