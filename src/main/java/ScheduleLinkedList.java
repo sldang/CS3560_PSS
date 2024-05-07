@@ -109,7 +109,7 @@ public class ScheduleLinkedList {
 
 
     public ScheduleNode getHead(){
-        return null;
+        return head;
     }
 }
 
