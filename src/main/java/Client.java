@@ -3,6 +3,7 @@ public class Client {
 
     public static void main(String[] args){
 
+<<<<<<< HEAD
                 // Initialize TaskSchedule
                 TaskSchedule taskSchedule = TaskSchedule.getInstance();
 
@@ -53,5 +54,7 @@ public class Client {
                 System.out.println("\nSchedule for January 2024:");
                 viewer.printMonthSchedule(20240101);
 
+=======
+>>>>>>> 967bd0ff93f5a7b98e2f349c51b3b93914f4f400
     }
 }
