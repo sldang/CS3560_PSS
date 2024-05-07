@@ -1,3 +1,5 @@
+import static org.junit.jupiter.api.DynamicTest.stream;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -74,9 +76,35 @@ public class TaskSchedule {
         }
     }
 
-    //@FIXME There should be a better way to handle this. Should we search by name? How do we edit? -Alex
-    public void updateTask(Task taskToUpdate, Task taskToReplace){
+    // update task by searching for it, and replacing it with the new updated information
+    public void updateTask(String taskToUpdate, Task taskToReplace){
+        // Finding the task by its name by searching through all the tasks we have already
+        // Used to store the existing tasks info
+        Task existingTask = findTaskByName(taskToUpdate);
 
+        if (existingTask != null) {
+            // Updates the existing task directly. (task to update) with the new task (task to replace) info
+            // Moving all info from taskToReplace to taskToUpdate
+            existingTask.setName(taskToReplace.getName());
+            existingTask.setStartDate(taskToReplace.getStartDate());
+            existingTask.setEndDate(taskToReplace.getEndDate());
+            existingTask.setStartTime(taskToReplace.getStartTime());
+            existingTask.setDuration(taskToReplace.getDuration());
+            existingTask.setFrequency(taskToReplace.getFrequency());
+
+            // check for overlaps with other tasks in the PSS
+            if (!checkForOverlaps(existingTask)) {
+               // Successful update of task
+               System.out.println("Task " + taskToUpdate + " has been updated successfully!");
+            } else {
+                // handles overlaps between two tasks case.
+                System.out.println("Cannot update task due to overlap with existing tasks.");
+            }
+        }
+        else {
+            // handles task not found case.
+            System.out.println("The task " + taskToUpdate + " does not exist or cannot be found.");
+        }
     }
 
     public Task findTaskByName(String name){
