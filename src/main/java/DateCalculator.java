@@ -40,12 +40,16 @@ public class DateCalculator {
         Calendar calendar = Calendar.getInstance();
 
         //FIXME Note: Calendar uses 0-11 Format for Month when setting date
+        calendar.set(Calendar.YEAR, 2024);
         calendar.set(Calendar.MONTH, month - 1);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
 
         String start = sdf.format(calendar.getTime());
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getMaximum(Calendar.DAY_OF_MONTH));
         String end = sdf.format(calendar.getTime());
+
+        System.out.println(start);
+        System.out.println(end);
 
         int startDate = Integer.parseInt(start);
         int endDate = Integer.parseInt(end);
