@@ -1,56 +1,97 @@
+import java.io.IOException;
+import java.util.Scanner;
 
 public class Client {
-
-    public static void main(String[] args){
-
-    // Initialize TaskSchedule
-    TaskSchedule taskSchedule = TaskSchedule.getInstance();
-
-                // Create tasks
-    Task meeting = new RecurringTask();
-    meeting.setName("Weekly Meeting");
-    meeting.setType("Recurring");
-    meeting.setStartDate(20240101);
-    meeting.setEndDate(20240131);
-    meeting.setStartTime(10.0f);
-    meeting.setDuration(2.0f);
-    meeting.setFrequency(7); // Recurring weekly
+    public static void main(String[] args) throws IOException {
+       
+        // user select menu
+            int option;
+            try (Scanner scnr = new Scanner(System.in)) {
+                // loops until you choose the option to exit the menu
+                for ( ; ; )
+                {   
+                    System.out.println("PSS Client Menu Selection Screen");
+                    System.out.println("1 = Create a task");
+                    System.out.println("2 = View a task");
+                    System.out.println("3 = Delete a task");
+                    System.out.println("4 = Edit a task");
+                    System.out.println("5 = Write the schedule to a json file");
+                    System.out.println("6 = Read the schedule to a json file");
+                    System.out.println("7 = View or write the schedule for one day");
+                    System.out.println("8 = View or write the schedule for one week");
+                    System.out.println("9 = View or write the schedule for one month");
+                    System.out.println("10 to exit the menu.");
+                    System.out.print("Enter option: ");
+                    option = scnr.nextInt();
+                    System.out.println("");
+            
+                   
+                        if (option == 0) {
+                            break;
+                        }
+                        else if (option == 1) {
+                        //    addTask();
+                            System.out.println("Task added");
+                            System.out.println();
+                        }
+                        else if (option == 2) {
+                           // viewTask();
+                           System.out.println("Task viewed");
+                            System.out.println();
+                        }
+                        else if (option == 3) {
+                            // deleteTask();
+                            System.out.println("Task deleted");
+                            System.out.println();
+                        }
+                        else if (option == 4) {
+                            // editTask();
+                            System.out.println("Task edited");
+                            System.out.println();
+                            // break;
+                        }
+                        else if (option == 5) {
+                            // writeTasksToFile();
+                            // Write the schedule to a json file
+                            System.out.println("Schedule written to the json file");
+                            System.out.println();
+                        }
+                        else if (option == 6) {
+                            // readFromFile();
+                            // read the schedule to a json file
+                            System.out.println("Schedule read to the json file");
+                            System.out.println();
+                        }
+                        else if (option == 7) {
+                            // printDaySchedule();
+                            // view or write the schedule for one specific day
+                            System.out.println("This is your specified day schedule");
+                            System.out.println();
+                            // break;
+                        }
+                        else if (option == 8) {
+                            // printWeekSchedule();
+                            // view or write the schedule for one specific week
+                            System.out.println("This is your specified week schedule");
+                            System.out.println();
+                            // break;
+                        }
+                        else if (option == 9) {
+                             // printMonthSchedule();
+                            // view or write the schedule for one specific month
+                            System.out.println("This is your specified month schedule");
+                            System.out.println();
+                            // break;
+                        }
+                        else if(option == 10)
+                            {
+                                System.exit(0);
+                                break;
+                            }
+                    }
+                }
+            
+                
         
-    Task appointment = new TransientTask();
-    appointment.setName("Doctor Appointment");
-    appointment.setType("Transient");
-    appointment.setStartDate(20240115);
-    appointment.setStartTime(14.0f);
-    appointment.setDuration(1.0f);
-        
-    Task cancellation = new AntiTask();
-    cancellation.setName("Meeting Cancellation");
-    cancellation.setType("Anti");
-    cancellation.setStartDate(20240108); // Cancels the meeting on this date
-    cancellation.setStartTime(10.0f);
-    cancellation.setDuration(2.0f);
-
-    // Add tasks to the schedule
-    taskSchedule.addTask(meeting);
-    taskSchedule.addTask(appointment);
-    taskSchedule.addTask(cancellation);
-
-    // Initialize ScheduleViewer and display schedules
-    ScheduleViewer viewer = ScheduleViewer.getInstance();
-
-    // Print specific day schedules
-    System.out.println("Schedule for January 1, 2024:");
-    viewer.printDaySchedule(20240101);
-
-    System.out.println("\nSchedule for January 15, 2024:");
-    viewer.printDaySchedule(20240115);
-
-    // Print a week schedule
-    System.out.println("\nSchedule for the first week of January 2024:");
-    viewer.printWeekSchedule(20240101);
-
-    // Print a month schedule
-    System.out.println("\nSchedule for January 2024:");
-    viewer.printMonthSchedule(20240101);
+        }
     }
-}

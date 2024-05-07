@@ -144,6 +144,7 @@ public class TaskSchedule {
 
                 // if durations collide. Else, iterate next
                 if (checkDurationOverlap(task, existingTask)){
+                    System.out.println("There is an overlap cannot add task or update task at the specified date and time due to this.");
                     return true;
                 }
             } else {
@@ -156,6 +157,7 @@ public class TaskSchedule {
                 workingScheduleNode = workingScheduleNode.getNext();
             }
         }
+        // There was no overlap. Task can be successfully added or updated!
         return false;
     }
 
