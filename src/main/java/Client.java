@@ -32,21 +32,25 @@ public class Client {
                         else if (option == 1) {
                         //    addTask();
                             System.out.println("Task added");
+                            System.out.println("-----------------------");
                             System.out.println();
                         }
                         else if (option == 2) {
                            // viewTask();
                            System.out.println("Task viewed");
-                            System.out.println();
+                           System.out.println("-----------------------");
+                           System.out.println();
                         }
                         else if (option == 3) {
                             // deleteTask();
                             System.out.println("Task deleted");
+                            System.out.println("-----------------------");
                             System.out.println();
                         }
                         else if (option == 4) {
                             // editTask();
                             System.out.println("Task edited");
+                            System.out.println("-----------------------");
                             System.out.println();
                             // break;
                         }
@@ -54,18 +58,21 @@ public class Client {
                             // writeTasksToFile();
                             // Write the schedule to a json file
                             System.out.println("Schedule written to the json file");
+                            System.out.println("-----------------------");
                             System.out.println();
                         }
                         else if (option == 6) {
                             // readFromFile();
                             // read the schedule to a json file
                             System.out.println("Schedule read to the json file");
+                            System.out.println("-----------------------");
                             System.out.println();
                         }
                         else if (option == 7) {
                             // printDaySchedule();
                             // view or write the schedule for one specific day
                             System.out.println("This is your specified day schedule");
+                            System.out.println("-----------------------");
                             System.out.println();
                             // break;
                         }
@@ -73,6 +80,7 @@ public class Client {
                             // printWeekSchedule();
                             // view or write the schedule for one specific week
                             System.out.println("This is your specified week schedule");
+                            System.out.println("-----------------------");
                             System.out.println();
                             // break;
                         }
@@ -80,6 +88,7 @@ public class Client {
                              // printMonthSchedule();
                             // view or write the schedule for one specific month
                             System.out.println("This is your specified month schedule");
+                            System.out.println("-----------------------");
                             System.out.println();
                             // break;
                         }
