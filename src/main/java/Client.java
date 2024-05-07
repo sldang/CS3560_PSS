@@ -3,46 +3,55 @@ public class Client {
 
     public static void main(String[] args){
 
+                // Initialize TaskSchedule
+                TaskSchedule taskSchedule = TaskSchedule.getInstance();
+
                 // Create tasks
-                RecurringTask recurringTask = new RecurringTask();
-                recurringTask.setName("Team Meeting");
-                recurringTask.setType("Recurring");
-                recurringTask.setStartTime(14.0f); // 2 PM
-                recurringTask.setDuration(2.0f); // 2 hours duration
-                recurringTask.setStartDate(20230101); // January 1, 2023
-                recurringTask.setEndDate(20231231); // December 31, 2023
-                recurringTask.setFrequency(7); // Weekly
+                Task meeting = new RecurringTask();
+                meeting.setName("Weekly Meeting");
+                meeting.setType("Recurring");
+                meeting.setStartDate(20240101);
+                meeting.setEndDate(20240131);
+                meeting.setStartTime(10.0f);
+                meeting.setDuration(2.0f);
+                meeting.setFrequency(7); // Recurring weekly
         
-                TransientTask transientTask = new TransientTask();
-                transientTask.setName("Project Deadline");
-                transientTask.setType("Transient");
-                transientTask.setStartTime(17.0f); // 5 PM
-                transientTask.setDuration(1.0f); // 1 hour duration
-                transientTask.setStartDate(20230110); // January 10, 2023
+                Task appointment = new TransientTask();
+                appointment.setName("Doctor Appointment");
+                appointment.setType("Transient");
+                appointment.setStartDate(20240115);
+                appointment.setStartTime(14.0f);
+                appointment.setDuration(1.0f);
         
-                AntiTask antiTask = new AntiTask();
-                antiTask.setName("Cancel Meeting");
-                antiTask.setType("Anti");
-                antiTask.setStartTime(14.0f); // 2 PM same as meeting time
-                antiTask.setDuration(2.0f); // 2 hours, cancels out the meeting
-                antiTask.setStartDate(20230108); // January 8, 2023, assuming this was a meeting day
+                Task cancellation = new AntiTask();
+                cancellation.setName("Meeting Cancellation");
+                cancellation.setType("Anti");
+                cancellation.setStartDate(20240108); // Cancels the meeting on this date
+                cancellation.setStartTime(10.0f);
+                cancellation.setDuration(2.0f);
         
-                // Add tasks to TaskSchedule
-                TaskSchedule schedule = TaskSchedule.getInstance();
-                schedule.addTask(recurringTask);
-                schedule.addTask(transientTask);
-                schedule.addTask(antiTask);
+                // Add tasks to the schedule
+                taskSchedule.addTask(meeting);
+                taskSchedule.addTask(appointment);
+                taskSchedule.addTask(cancellation);
         
-                // Initialize ScheduleViewer and print schedules
+                // Initialize ScheduleViewer and display schedules
                 ScheduleViewer viewer = ScheduleViewer.getInstance();
-                System.out.println("Day Schedule for January 1, 2023:");
-                viewer.printDaySchedule(20230101);
         
-                System.out.println("\nWeek Schedule for first week of January 2023:");
-                viewer.printWeekSchedule(20230101);
+                // Print specific day schedules
+                System.out.println("Schedule for January 1, 2024:");
+                viewer.printDaySchedule(20240101);
         
-                System.out.println("\nMonth Schedule for January 2023:");
-                viewer.printMonthSchedule(1);
+                System.out.println("\nSchedule for January 15, 2024:");
+                viewer.printDaySchedule(20240115);
+        
+                // Print a week schedule
+                System.out.println("\nSchedule for the first week of January 2024:");
+                viewer.printWeekSchedule(20240101);
+        
+                // Print a month schedule
+                System.out.println("\nSchedule for January 2024:");
+                viewer.printMonthSchedule(20240101);
 
     }
 }
