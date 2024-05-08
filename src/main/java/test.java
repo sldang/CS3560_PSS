@@ -36,7 +36,7 @@ public class test {
 
         // Read tasks from the file
         System.out.println("Reading tasks from file:");
-        List<Task> readTasks = fileSaving.readFromFile(fileName);
+        List<Task> readTasks = fileSaving.readFromFile("Set1.json");
 
         // Assuming a method exists to print the details of the tasks
         if (readTasks != null) {
