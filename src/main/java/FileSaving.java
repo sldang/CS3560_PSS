@@ -55,7 +55,7 @@ public class FileSaving {
 
             task.add(newTask); //@FIXME Are tasks saved sequentially? - Alex
         }
-        return null;
+        return task;
     }
 
     private JSONArray readJSONArrayFromFile(String fileName) {
