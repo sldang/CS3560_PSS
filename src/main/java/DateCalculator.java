@@ -37,7 +37,7 @@ public class DateCalculator {
 
     public static int[] getMonthDates(int month){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = new GregorianCalendar();
 
         //FIXME Note: Calendar uses 0-11 Format for Month when setting date
         calendar.set(Calendar.YEAR, 2024);
