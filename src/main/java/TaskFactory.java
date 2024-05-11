@@ -24,7 +24,7 @@ public class TaskFactory {
         } else {
             //throw an error or something
         }
-        return type;
+        return null;
     }
     private static TaskFactory instance;
     int date;
