@@ -10,6 +10,7 @@ public class Client {
         // creating a schedule object to use
         TaskSchedule schedule = TaskSchedule.getInstance();
         Scanner scanner = new Scanner(System.in);
+        FileSaving fileSaving = FileSaving.getInstance();
 
         try (Scanner scnr = new Scanner(System.in)) {
             // loops until you choose the option to exit the menu
@@ -84,13 +85,28 @@ public class Client {
                 } else if (option == 5) {
                     // writeTasksToFile();
                     // Write the schedule to a json file
-                    System.out.println("Schedule written to the json file");
+                     // Save tasks to file
+                    System.out.print("Enter filename to save tasks: ");
+                    String saveFileName = scanner.nextLine();
+                    fileSaving.writeTasksToFile(saveFileName, schedule.listAllTasks());
+                    System.out.println("Tasks saved to " + saveFileName);
                     System.out.println("-----------------------");
                     System.out.println();
                 } else if (option == 6) {
                     // readFromFile();
                     // read the schedule to a json file
-                    System.out.println("Schedule read to the json file");
+                    System.out.print("Enter filename to load tasks from: ");
+                    String loadFileName = scanner.nextLine();
+                    List<Task> readTasks = fileSaving.readFromFile(loadFileName);
+                    // Print the details of the tasks
+                    if (readTasks != null && !readTasks.isEmpty()) {
+                        for (Task task : readTasks) {
+                            System.out.println("Task: " + task.getName() + ", Type: " + task.getType() +
+                                ", Start Date: " + task.getStartDate() + ", Duration: " + task.getDuration());
+                        }
+                    } else {
+                        System.out.println("No tasks were read from the file or the file is empty.");
+                    }
                     System.out.println("-----------------------");
                     System.out.println();
                 } else if (option == 7) {
