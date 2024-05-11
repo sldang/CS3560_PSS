@@ -248,13 +248,29 @@ public class Client {
                     System.exit(0);
                     break;
                 } else if (option == 1) {
-                    // Create task from user input
-                Task task = createTaskFromUserInput(scanner);
-                if (task != null) {
-                    schedule.addTask(task);
-                    System.out.println("Task added to schedule.");
-                } else {
-                    System.out.println("Failed to create task.");
+                // Create task from user input
+                // Task task = createTaskFromUserInput(scanner);
+                // if (task != null) {
+                //     schedule.addTask(task);
+                //     System.out.println("Task added to schedule.");
+                // } else {
+                //     System.out.println("Failed to create task.");
+                // }
+
+                // Create task from user input. Asks until user is done creating all the tasks they want
+                boolean done = false;
+                while (!done) {
+                    Task task = createTaskFromUserInput(scanner);
+                    if (task != null) {
+                        schedule.addTask(task);
+                    }
+
+                    System.out.print("Do you want to add another task? (yes/no): ");
+                    String addAnother = scanner.nextLine().toLowerCase(); // Convert input to lowercase for comparison
+                    System.out.println();
+                    if (!addAnother.equals("yes")) {
+                        done = true;
+                    }
                 }
                     System.out.println("Task(s) added");
                     System.out.println("-----------------------");
