@@ -5,6 +5,7 @@ public class test {
 
     public static void main(String[] args){
        
+        // TESTING with file saving
         // Initialize FileSaving instance
         FileSaving fileSaving = FileSaving.getInstance();
 
@@ -47,6 +48,9 @@ public class test {
         } else {
             System.out.println("No tasks were read from the file or the file is empty.");
         }
+
+
+        //TESTING WITHOUT FILESAVING
         /* 
         TaskSchedule schedule = TaskSchedule.getInstance();
 
