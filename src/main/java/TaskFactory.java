@@ -4,8 +4,8 @@ import java.util.Map;
 public class TaskFactory {
     private static Map<String, String> typeTranslation = new HashMap<>();
     static {
-        String[] transientTypes = {"Appointment", "Movie", "Shopping"};
-        String[] reccuringTypes = {"Class", "Excersize", "Recurring"};
+        String[] transientTypes = {"Appointment", "Visit", "Shopping"};
+        String[] reccuringTypes = {"Class", "Excercise", "Recurring", "Study", "Sleep", "Work", "Meal"};
         String[] antiTypes = {"Cancellation"};
         for (String type : reccuringTypes) {
             typeTranslation.put(type, "RecurringTask");
