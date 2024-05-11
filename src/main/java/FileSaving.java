@@ -58,15 +58,21 @@ public class FileSaving {
         return task;
     }
 
+    // new method (works)
     private JSONArray readJSONArrayFromFile(String fileName) {
         StringBuilder jsonData = new StringBuilder();
         String line;
-
+    
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            return new JSONArray(jsonData.toString());
+            String jsonString = jsonData.toString().trim();
+            if (!jsonString.startsWith("[")) {
+                // If JSON data doesn't start with '[', add it to make it an array
+                jsonString = "[" + jsonString + "]";
+            }
+            return new JSONArray(jsonString);
         } catch (FileNotFoundException e) {
             System.out.println("File not found: " + fileName);
         } catch (IOException | JSONException e) {
@@ -74,6 +80,7 @@ public class FileSaving {
         }
         return new JSONArray(); // Return an empty JSONArray if there was an error
     }
+    
 }
 
 

@@ -5,49 +5,53 @@ public class test {
 
     public static void main(String[] args){
        
+        // TESTING with file saving and without task schedule object
         // Initialize FileSaving instance
-        FileSaving fileSaving = FileSaving.getInstance();
+        // FileSaving fileSaving = FileSaving.getInstance();
 
-        // Create some tasks
-        Task recurringTask = new RecurringTask();
-        recurringTask.setName("Weekly Team Meeting");
-        recurringTask.setType("Recurring");
-        recurringTask.setStartDate(20230501);
-        recurringTask.setEndDate(20231231);
-        recurringTask.setStartTime(9.0f);
-        recurringTask.setDuration(2.0f);
-        recurringTask.setFrequency(7);
+        // // Create some tasks
+        // Task recurringTask = new RecurringTask();
+        // recurringTask.setName("Weekly Team Meeting");
+        // recurringTask.setType("Recurring");
+        // recurringTask.setStartDate(20230501);
+        // recurringTask.setEndDate(20231231);
+        // recurringTask.setStartTime(9.0f);
+        // recurringTask.setDuration(2.0f);
+        // recurringTask.setFrequency(7);
 
-        Task transientTask = new TransientTask();
-        transientTask.setName("Doctor Appointment");
-        transientTask.setType("Appointment");
-        transientTask.setStartDate(20230505);
-        transientTask.setStartTime(14.0f);
-        transientTask.setDuration(0.5f);
+        // Task transientTask = new TransientTask();
+        // transientTask.setName("Doctor Appointment");
+        // transientTask.setType("Appointment");
+        // transientTask.setStartDate(20230505);
+        // transientTask.setStartTime(14.0f);
+        // transientTask.setDuration(0.5f);
 
-        // Create a list of tasks
-        List<Task> tasks = new ArrayList<>();
-        tasks.add(recurringTask);
-        tasks.add(transientTask);
+        // // Create a list of tasks
+        // List<Task> tasks = new ArrayList<>();
+        // tasks.add(recurringTask);
+        // tasks.add(transientTask);
 
-        // Write tasks to a JSON file
-        String fileName = "Set1.json";
-        fileSaving.writeTasksToFile(fileName, tasks);
+        // // Write tasks to a JSON file
+        // String fileName = "Set1.json";
+        // fileSaving.writeTasksToFile(fileName, tasks);
 
-        // Read tasks from the file
-        System.out.println("Reading tasks from file:");
-        List<Task> readTasks = fileSaving.readFromFile("Set1.json");
+        // // Read tasks from the file
+        // System.out.println("Reading tasks from file:");
+        // List<Task> readTasks = fileSaving.readFromFile("Set1.json");
 
-        // Assuming a method exists to print the details of the tasks
-        if (readTasks != null) {
-            for (Task task : readTasks) {
-                System.out.println("Task: " + task.getName() + ", Type: " + task.getType() +
-                    ", Start Date: " + task.getStartDate() + ", Duration: " + task.getDuration());
-            }
-        } else {
-            System.out.println("No tasks were read from the file or the file is empty.");
-        }
-        /* 
+        // // Assuming a method exists to print the details of the tasks
+        // if (readTasks != null) {
+        //     for (Task task : readTasks) {
+        //         System.out.println("Task: " + task.getName() + ", Type: " + task.getType() +
+        //             ", Start Date: " + task.getStartDate() + ", Duration: " + task.getDuration());
+        //     }
+        // } else {
+        //     System.out.println("No tasks were read from the file or the file is empty.");
+        // }
+
+
+        //TESTING WITHOUT FILESAVING but with task schedule object
+         
         TaskSchedule schedule = TaskSchedule.getInstance();
 
         // Example tasks
@@ -55,9 +59,9 @@ public class test {
         task1.setName("Weekly Team Meeting");
         task1.setType("Meeting");
         task1.setStartDate(20230101);
-        task1.setEndDate(20230131);
         task1.setStartTime(9.0f);
         task1.setDuration(1.0f);
+        task1.setEndDate(20230131);
         task1.setFrequency(1);
 
         Task task2 = new TransientTask();
@@ -121,7 +125,7 @@ public class test {
             System.out.println("-----------------------");
         }
 
-        */
+        
 
     }
 
