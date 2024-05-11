@@ -1,0 +1,27 @@
+[
+    {
+        "StartDate": 20230501,
+        "Type": "Recurring",
+        "StartTime": 9,
+        "Frequency": 7,
+        "Duration": 2,
+        "EndDate": 20231231,
+        "Name": "Weekly Team Meeting"
+    },
+    {
+        "Type": "Appointment",
+        "StartTime": 14,
+        "Duration": 0.5,
+        "Date": 20230505,
+        "Name": "Doctor Appointment"
+    },
+    {
+        "StartDate": 20240101,
+        "Type": "Recurring",
+        "StartTime": 10,
+        "Frequency": 7,
+        "Duration": 2,
+        "EndDate": 20241231,
+        "Name": "Zoom Meeting"
+    }
+]
