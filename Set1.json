@@ -18,9 +18,16 @@
     "Frequency" : 1
   },
   {
+    "Name" : "Skip For Visit",
+    "Type" : "Cancellation",
+    "Date" : 20200428,
+    "StartTime" : 19,
+    "Duration" : 1.25
+  },
+  {
     "Name" : "Intern Interview",
     "Type" : "Appointment",
-    "Date" : 20200427,
+    "Date" : 20200428,
     "StartTime" : 17,
     "Duration" : 2.5
   }
