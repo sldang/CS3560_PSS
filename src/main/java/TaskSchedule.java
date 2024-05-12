@@ -195,9 +195,9 @@ public class TaskSchedule {
         float taskAEnd = taskAStart + taskA.getDuration();
         float taskBEnd = taskBStart + taskB.getDuration();
 
-        if (taskAStart >= taskBStart && taskAStart <= taskBEnd){
+        if (taskAStart >= taskBStart && taskAStart < taskBEnd){
             return true;
-        } else if (taskAEnd >= taskBStart && taskAEnd <= taskBEnd){
+        } else if (taskAEnd > taskBStart && taskAEnd <= taskBEnd){
             return true;
         }
         return false;
