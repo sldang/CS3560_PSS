@@ -38,7 +38,7 @@ public class FileSaving {
 
     public List<Task> readFromFile(String fileName) {
         JSONArray readArray = readJSONArrayFromFile(fileName);
-        List<Task> task = new LinkedList<>();
+        List<Task> tasks = new LinkedList<>();
         Iterator<Object> arrayIterator = readArray.iterator();
         while (arrayIterator.hasNext()){
             JSONObject working = (JSONObject) arrayIterator.next();
@@ -55,7 +55,7 @@ public class FileSaving {
                 if (newTask != null) {
                     newTask.fromJSONObject(working);
                      //@FIXME Are tasks saved sequentially? - Alex
-                    task.add(newTask);
+                    tasks.add(newTask);
                 } else {
                     System.err.println("Failed to create task of type: " + translatedType);
                 }
@@ -64,7 +64,7 @@ public class FileSaving {
             }
         }
         
-        return task;
+        return tasks;
     }
 
     // new method (works)

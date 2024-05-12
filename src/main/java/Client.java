@@ -139,37 +139,21 @@ public class Client {
     private static Task createTaskFromUserInput(Scanner scanner) {
         TaskFactory taskFactory = TaskFactory.getInstance();
 
-        System.out.println("Choose task type:");
-        System.out.println("1. Recurring Task");
-        System.out.println("2. Transient Task");
-        System.out.println("3. Anti Task");
-        System.out.print("Enter your choice: ");
-        int choice = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
+        String name = "";
+        String type = null;
 
-        String type;
-        switch (choice) {
-            case 1:
-                type = "RecurringTask";
-                break;
-            case 2:
-                type = "TransientTask";
-                break;
-            case 3:
-                type = "AntiTask";
-                break;
-            default:
-                System.out.println("Invalid choice. Task not created.");
-                return null;
-        }
+        System.out.print("Enter task name: ");
+            name = scanner.nextLine();
+
+            System.out.print("Enter task type: ");
+            type = scanner.nextLine();
 
         Task task = taskFactory.createTask(type);
         if (task != null) {
-            System.out.print("Enter task name: ");
-            task.setName(scanner.nextLine());
+            
+            task.setName(name);
 
-            System.out.print("Enter task type: ");
-            task.setType(scanner.nextLine());
+            task.setType(type);
 
             System.out.print("Enter start date (YYYYMMDD): ");
             task.setStartDate(scanner.nextInt());
