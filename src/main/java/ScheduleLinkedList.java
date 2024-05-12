@@ -140,14 +140,18 @@ class ScheduleNode {
 }
 
 class ScheduleReplacementNode extends ScheduleNode {
-    private List<Task> replacementTasks;
+    private Task replacementTask;
 
-    public ScheduleReplacementNode(Task originalTask, List<Task> replacementTasks) {
-        super(originalTask);
-        this.replacementTasks = new ArrayList<>(replacementTasks);
+    public ScheduleReplacementNode(Task task, Task replacementTask) {
+        super(task);
+        this.replacementTask = replacementTask;
     }
 
-    public List<Task> getReplacementTasks() {
-        return replacementTasks;
+    public Task getReplacementTask() {
+        return replacementTask;
+    }
+
+    public void setReplacementTask(Task replacementTask) {
+        this.replacementTask = replacementTask;
     }
 }

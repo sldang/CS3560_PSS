@@ -347,6 +347,7 @@ class AntiTask implements Task {
         startDate = jsonObject.getInt("Date");
         startTime = jsonObject.getFloat("StartTime");
         duration = jsonObject.getFloat("Duration");
+        this.dateInstance = startDate;
     }
 
     @Override
@@ -441,6 +442,7 @@ class AntiTask implements Task {
     @Override
     public void setStartDate(int startDate) {
         this.startDate = startDate;
+        this.dateInstance = startDate;
     }
 
     @Override

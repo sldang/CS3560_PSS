@@ -25,7 +25,44 @@ public class TaskSchedule {
 
     //FIXME: This is a really long method and should be split up - Alex
     public void addTask(Task task){
-        if (!checkForOverlaps(task)){
+        if (TaskFactory.getTranslation(task.getType()).equals("AntiTask")) {
+            tasksGeneral.add(task);
+
+            int removeDate = task.getStartDate();
+            ScheduleNode iteratedEvent = schedule.getHead();
+            ScheduleNode previousEvent = null;
+
+            boolean match = false;
+
+            //FIXME: fix this atrocity
+            while (iteratedEvent != null){
+                if (iteratedEvent.getTask().getDateInstance() == removeDate &&
+                    iteratedEvent.getTask().getStartTime() == task.getStartTime() &&
+                    iteratedEvent.getTask().getStartTime() + iteratedEvent.getTask().getDuration() == task.getStartTime() + task.getDuration() &&
+                    TaskFactory.getTranslation(iteratedEvent.getTask().getType()).equals("RecurringTask"))
+                {
+                    match = true;
+                    // The anti task is valid
+                    ScheduleNode replacementNode = new ScheduleReplacementNode(task, iteratedEvent.getTask());
+                    replacementNode.setNext(iteratedEvent.getNext());
+
+                    if (previousEvent != null){
+                        previousEvent.setNext(replacementNode);
+                    } else {
+                        // Handles HEAD
+                        schedule.addFirst(replacementNode);
+                    }
+                    break;
+                } else {
+                    previousEvent = iteratedEvent;
+                    iteratedEvent = iteratedEvent.getNext();
+                }
+            }
+
+            if (!match){
+                System.out.println("Antitask FAILED to find another task");
+            }
+        } else if (!checkForOverlaps(task)){
             tasksGeneral.add(task);
             int frequency = task.getFrequency();
             int iteratedDate = task.getStartDate();
@@ -50,7 +87,6 @@ public class TaskSchedule {
                 } else {
                     schedule.addAfter(previousEvent, nodeToAdd);
                 }
-                //nodeToAdd.setNext(iteratedEvent);
 
                 previousEvent = nodeToAdd;
 
