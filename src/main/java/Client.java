@@ -72,7 +72,7 @@ public class Client {
                     System.out.println("-----------------------");
                     System.out.println();
                 } else if (option == 3) {
-                    // deleteTask();
+                    schedule.removeTask(schedule.findTaskByName("Intern Interview"));
                     System.out.println("Task deleted");
                     System.out.println("-----------------------");
                     System.out.println();
@@ -150,12 +150,12 @@ public class Client {
         String type = null;
 
         System.out.print("Enter task name: ");
-            name = scanner.nextLine();
+        name = scanner.nextLine();
 
-            System.out.print("Enter task type: ");
-            type = scanner.nextLine();
+        System.out.print("Enter task type: ");
+        type = scanner.nextLine();
 
-        Task task = taskFactory.createTask(type);
+        Task task = taskFactory.createTask(TaskFactory.getTranslation(type));
         if (task != null) {
             
             task.setName(name);

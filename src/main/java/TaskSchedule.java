@@ -26,8 +26,6 @@ public class TaskSchedule {
     //FIXME: This is a really long method and should be split up - Alex
     public void addTask(Task task){
         if (TaskFactory.getTranslation(task.getType()).equals("AntiTask")) {
-            tasksGeneral.add(task);
-
             int removeDate = task.getStartDate();
             ScheduleNode iteratedEvent = schedule.getHead();
             ScheduleNode previousEvent = null;
@@ -52,6 +50,7 @@ public class TaskSchedule {
                         // Handles HEAD
                         schedule.addFirst(replacementNode);
                     }
+                    tasksGeneral.add(task);
                     break;
                 } else {
                     previousEvent = iteratedEvent;
@@ -200,8 +199,10 @@ public class TaskSchedule {
 
                 // if durations collide. Else, iterate next
                 if (checkDurationOverlap(task, existingTask)){
-                    System.out.println("There is an overlap cannot add task or update task at the specified date and time due to this.");
-                    return true;
+                    if (!TaskFactory.getTranslation(existingTask.getType()).equals("AntiTask")){
+                        System.out.println("There is an overlap cannot add task or update task at the specified date and time due to this.");
+                        return true;
+                    }
                 }
             } else {
                 // No conflict, Iterate next on the list, either next frequency or next existing event
@@ -234,6 +235,8 @@ public class TaskSchedule {
         if (taskAStart >= taskBStart && taskAStart < taskBEnd){
             return true;
         } else if (taskAEnd > taskBStart && taskAEnd <= taskBEnd){
+            return true;
+        } else if (taskAStart < taskBStart && taskAEnd > taskBEnd){
             return true;
         }
         return false;

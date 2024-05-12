@@ -44,16 +44,19 @@ public class TaskFactory {
 
     // To specify which task type to create
     public Task createTask(String type) {
-        switch (type) {
-            case "RecurringTask":
-                return new RecurringTask();
-            case "TransientTask":
-                return new TransientTask();
-            case "AntiTask":
-                return new AntiTask();
-            default:
-                return null;
+        if (type != null){
+            switch (type) {
+                case "RecurringTask":
+                    return new RecurringTask();
+                case "TransientTask":
+                    return new TransientTask();
+                case "AntiTask":
+                    return new AntiTask();
+                default:
+                    return null;
+            }
         }
+        return null;
     }
 }
 
