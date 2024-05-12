@@ -101,6 +101,11 @@ public class Client {
                     // Print the details of the tasks
                     if (readTasks != null && !readTasks.isEmpty()) {
                         for (Task task : readTasks) {
+                            try {
+                                TaskSchedule.getInstance().addTask(task);
+                            } catch (Exception e){
+                                System.out.println("u stupid");
+                            }
                             System.out.println("Task: " + task.getName() + ", Type: " + task.getType() +
                                 ", Start Date: " + task.getStartDate() + ", Duration: " + task.getDuration());
                         }
@@ -117,12 +122,14 @@ public class Client {
                     System.out.println();
                     // break;
                 } else if (option == 8) {
-                    // printWeekSchedule();
+                    //FIXME: Let the user submit a date to put in
+                    // This date (20200414) was used as a test sample
+                    ScheduleViewer.getInstance().printWeekSchedule(20200414);
                     // view or write the schedule for one specific week
                     System.out.println("This is your specified week schedule");
                     System.out.println("-----------------------");
                     System.out.println();
-                    // break;
+                    break;
                 } else if (option == 9) {
                     // printMonthSchedule();
                     // view or write the schedule for one specific month

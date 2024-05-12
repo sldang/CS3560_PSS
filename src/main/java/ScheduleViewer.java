@@ -52,7 +52,7 @@ public class ScheduleViewer {
             return;
         }
         for (Task task : tasks) {
-            System.out.println("Task: " + task.getName() + " - Start Date: " + task.getDateInstance());
+            System.out.println("Task: " + task.getName() + " - Date: " + task.getDateInstance() + " - Time: " + task.getStartTime());
         }
     }
 }

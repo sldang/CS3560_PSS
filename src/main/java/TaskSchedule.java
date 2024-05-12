@@ -30,41 +30,44 @@ public class TaskSchedule {
             int frequency = task.getFrequency();
             int iteratedDate = task.getStartDate();
             ScheduleNode iteratedEvent = schedule.getHead();
-            ScheduleNode previousEvent = schedule.getHead();
+            ScheduleNode previousEvent = null;
             while (iteratedDate <= task.getEndDate()){
                 Task copiedTaskEvent = task.getCopyOf();
                 copiedTaskEvent.setDateInstance(iteratedDate);
                 ScheduleNode nodeToAdd = new ScheduleNode(copiedTaskEvent);
                 nodeToAdd.setTask(copiedTaskEvent);
 
-
+                while (iteratedEvent != null && iteratedEvent.getTask().getDateInstance() <= iteratedDate){
+                    if (iteratedEvent.getTask().getDateInstance() == iteratedDate && iteratedEvent.getTask().getStartTime() >= task.getStartTime() + task.getDuration()){
+                        break;
+                    } else {
+                        previousEvent = iteratedEvent;
+                        iteratedEvent = iteratedEvent.getNext();
+                    }
+                }
                 if (previousEvent == null){ // Handles adding first task
                     schedule.addFirst(nodeToAdd);
                 } else {
-                    while (iteratedEvent != null && iteratedEvent.getTask().getDateInstance() <= iteratedDate){
-                        if (iteratedEvent.getTask().getStartTime() >= task.getStartTime() + task.getDuration()){
-                            break;
-                        } else {
-                            previousEvent = iteratedEvent;
-                            iteratedEvent = iteratedEvent.getNext();
-                        }
-                    }
                     schedule.addAfter(previousEvent, nodeToAdd);
-                    nodeToAdd.setNext(iteratedEvent);
                 }
+                //nodeToAdd.setNext(iteratedEvent);
+
                 previousEvent = nodeToAdd;
 
+                //FIXME fix this atrocity
+                int testfrequency=10000000;
                 if (frequency == 7){
-                    frequency = 1;
+                    testfrequency = 1;
                   } else {
-                    frequency = 7;
+                    testfrequency = 7;
                   }
 
-                iteratedDate = DateCalculator.addDaysToDate(iteratedDate, frequency);
+                iteratedDate = DateCalculator.addDaysToDate(iteratedDate, testfrequency);
             }
 
         } else {
             //FIXME: Can't add task. Maybe throw an error here. - Alex
+            System.out.println("u stupid");
         }
     }
 
@@ -169,7 +172,14 @@ public class TaskSchedule {
             }
 
             if (existingTaskDateInstance > iteratedDate){
-                iteratedDate = DateCalculator.addDaysToDate(iteratedDate, frequency);
+                //FIXME fix this atrocity too
+                int testfrequency=10000000;
+                if (frequency == 7){
+                    testfrequency = 1;
+                } else {
+                    testfrequency = 7;
+                }
+                iteratedDate = DateCalculator.addDaysToDate(iteratedDate, testfrequency);
             } else {
                 workingScheduleNode = workingScheduleNode.getNext();
             }
