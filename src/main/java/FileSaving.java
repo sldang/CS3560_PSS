@@ -50,11 +50,20 @@ public class FileSaving {
             String type = working.getString("Type");
             String translatedType = TaskFactory.getTranslation(type);
 
-            Task newTask = TaskFactory.getInstance().createTask(translatedType);
-            newTask.fromJSONObject(working);
-
-            task.add(newTask); //@FIXME Are tasks saved sequentially? - Alex
+            if(translatedType != null){
+                Task newTask = TaskFactory.getInstance().createTask(translatedType);
+                if (newTask != null) {
+                    newTask.fromJSONObject(working);
+                     //@FIXME Are tasks saved sequentially? - Alex
+                    task.add(newTask);
+                } else {
+                    System.err.println("Failed to create task of type: " + translatedType);
+                }
+            } else {
+                System.err.println("No translation available for type: " + type);
+            }
         }
+        
         return task;
     }
 
