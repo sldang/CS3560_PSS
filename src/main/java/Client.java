@@ -54,21 +54,25 @@ public class Client {
                     System.out.println("-----------------------");
                     System.out.println();
                 } else if (option == 2) {
-                    // viewTask();
-                    // THIS CURRENTLY PRINTS OUT ALL TASKS BUT WE SHOULD HAVE IT PRINT ONLY A SPECIFIC TASK WE WANT TO VIEW
-                    System.out.println("\nScheduled Tasks: ");
-                    List<Task> allTasks = schedule.listAllTasks();
-                    for (Task task : allTasks) {
-                        System.out.println("Task Name: " + task.getName());
-                        System.out.println("Type: " + task.getType());
-                        System.out.println("Start Date: " + task.getStartDate());
-                        System.out.println("End Date: " + task.getEndDate());
-                        System.out.println("Start Time: " + task.getStartTime());
-                        System.out.println("Duration: " + task.getDuration());
-                        System.out.println("Frequency: " + (task.getFrequency() > 0 ? task.getFrequency() + " days " : "N/A"));
-                        System.out.println("-----------------------");
+                    // THIS IS TO VIEW 1 SPECIFIC TASK details
+                    System.out.println("\nTask Search: ");
+                    System.out.print("Enter the name of the task to be viewed: ");
+                    String taskNameToView = scanner.nextLine();
+                    Task taskToView = schedule.findTaskByName(taskNameToView);
+                    if (taskToView != null) {
+                        System.out.println("");
+                        System.out.println("Here are the specific task details:");
+                        System.out.println("Task Name: " + taskToView.getName());
+                        System.out.println("Type: " + taskToView.getType());
+                        System.out.println("Start Date: " + taskToView.getStartDate());
+                        System.out.println("End Date: " + taskToView.getEndDate());
+                        System.out.println("Start Time: " + taskToView.getStartTime());
+                        System.out.println("Duration: " + taskToView.getDuration());
+                        System.out.println("Frequency: " + (taskToView.getFrequency() > 0 ? taskToView.getFrequency() + " days " : "N/A"));
+                        System.out.println("Task viewed!");
+                    } else {
+                        System.out.println("Task does not exist.");
                     }
-                    System.out.println("Task viewed");
                     System.out.println("-----------------------");
                     System.out.println();
                 } else if (option == 3) {
@@ -95,7 +99,7 @@ public class Client {
                     // writeTasksToFile();
                     // Write the schedule to a json file
                      // Save tasks to file
-                    System.out.print("Enter filename to save tasks: ");
+                    System.out.print("Enter filename to save tasks: (Make sure to write your new schedule to a new json file and NOT to an existing json file.)");
                     String saveFileName = scanner.nextLine();
                     fileSaving.writeTasksToFile(saveFileName, schedule.listAllTasks());
                     System.out.println("Tasks saved to " + saveFileName);
