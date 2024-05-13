@@ -72,8 +72,17 @@ public class Client {
                     System.out.println("-----------------------");
                     System.out.println();
                 } else if (option == 3) {
-                    schedule.removeTask(schedule.findTaskByName("Intern Interview"));
-                    System.out.println("Task deleted");
+                    // schedule.removeTask(schedule.findTaskByName("Intern Interview"));
+                    // System.out.println("Task deleted");
+                    System.out.print("Enter the name of the task to be deleted: ");
+                        String taskNameToDelete = scanner.nextLine();
+                        Task taskToDelete = schedule.findTaskByName(taskNameToDelete);
+                        if (taskToDelete != null) {
+                            schedule.removeTask(taskToDelete);
+                            System.out.println("Task deleted");
+                        } else {
+                            System.out.println("Task does not exist.");
+                        }
                     System.out.println("-----------------------");
                     System.out.println();
                 } else if (option == 4) {
