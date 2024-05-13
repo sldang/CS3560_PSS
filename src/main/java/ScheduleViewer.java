@@ -49,7 +49,7 @@
 
 
         // Print the tasks
-        private void printTasks(List<Task> tasks) {
+        public void printTasks(List<Task> tasks) {
             if (tasks.isEmpty()) {
                 System.out.println("No tasks scheduled.");
                 return;

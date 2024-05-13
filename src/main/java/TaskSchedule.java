@@ -110,30 +110,66 @@ public class TaskSchedule {
 
     }
 
+    //Task must be a reference to an actual task, otherwise it will not match and will not find.
     public void removeTask(Task task){
         String name = task.getName();
         ScheduleNode node = schedule.getHead();
         ScheduleNode prevNode = null;
-        while (node != null){
-            //System.out.println("Iterated through: " + node.getTask().getName());
-            if (node.getTask().getName().equals(name)){
-                if (prevNode != null){
-                    prevNode.setNext(node.getNext());
-                    node = node.getNext();
+
+        String type = task.getType();
+
+        //Scenarios
+        //Removing an AntiTask and there is a task filling in it
+        //Removing a Recurring task and there is an AntiTask
+
+        if (TaskFactory.getTranslation(task.getType()).equals("AntiTask")){
+            Task correspondingRecurring = null;
+            while (node != null){
+                if (node.getTask().equals(task)){
+                    correspondingRecurring = node.getCorrespondingTask();
+                    break;
                 } else {
-                    schedule.removeFirst();
+                    prevNode = node;
+                    node = node.getNext();
+                }
+            }
+            if (correspondingRecurring != null){
+                // Found, check if another task uses the same time period.
+                ScheduleNode nextNode = node.getNext();
+                if (nextNode != null &&
+                        nextNode.getTask().getDateInstance() == task.getDateInstance() &&
+                        checkDurationOverlap(nextNode.getTask(), task)) {
+
+                    // There is an overlap, cannot proceed.
+                    System.err.println("Deletion of the AntiTask would cause a conflict!");
+                    // Maybe print about the dates + durations of both tasks
+
+                } else {
+                    // Perform a swap
+                    ScheduleNode newNode = new ScheduleNode(correspondingRecurring);
+                    schedule.remove(node);
+                    schedule.addAfter(prevNode, newNode);
+
+                    tasksGeneral.remove(task);
+                    System.out.println("Task removed!");
                 }
             } else {
-                prevNode = node;
+                // Not found
+                System.err.println("Task was not found!");
+            }
+        } else {
+            while (node != null){
+                //System.out.println("Iterated through: " + node.getTask().getName());
+                if (node.getTask().getName().equals(name)){
+                    schedule.remove(node);
+                } else if ((node.getCorrespondingTask() != null && node.getCorrespondingTask().getName().equals(name))){
+                    schedule.remove(node);
+                    tasksGeneral.remove(node.getTask());
+                }
                 node = node.getNext();
             }
-        }
-
-        for (int i = 0; i < tasksGeneral.size(); i++){
-            if (tasksGeneral.get(i).getName().equals(name)){
-                tasksGeneral.remove(i);
-                i--;
-            }
+            tasksGeneral.remove(task);
+            System.out.println("Task removed!");
         }
     }
 

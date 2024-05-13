@@ -116,6 +116,7 @@ public class ScheduleLinkedList {
 class ScheduleNode {
     private Task task;
     private ScheduleNode next;
+    private Task correspondingTask = null;
 
     public ScheduleNode(Task task) {
         this.task = task;
@@ -137,21 +138,25 @@ class ScheduleNode {
     public void setNext(ScheduleNode next) {
         this.next = next;
     }
+
+    public Task getCorrespondingTask() {
+        return correspondingTask;
+    }
 }
 
 class ScheduleReplacementNode extends ScheduleNode {
-    private Task replacementTask;
+    private Task correspondingTask;
 
-    public ScheduleReplacementNode(Task task, Task replacementTask) {
+    public ScheduleReplacementNode(Task task, Task correspondingTask) {
         super(task);
-        this.replacementTask = replacementTask;
+        this.correspondingTask = correspondingTask;
     }
 
-    public Task getReplacementTask() {
-        return replacementTask;
+    public Task getCorrespondingTask() {
+        return correspondingTask;
     }
 
-    public void setReplacementTask(Task replacementTask) {
-        this.replacementTask = replacementTask;
+    public void setCorrespondingTask(Task replacementTask) {
+        this.correspondingTask = replacementTask;
     }
 }
