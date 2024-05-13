@@ -117,27 +117,50 @@ public class Client {
                 } else if (option == 7) {
                     // printDaySchedule();
                     // view or write the schedule for one specific day
+                    System.out.print("Enter the date (YYYYMMDD) for the day's schedule: ");
+                    int date = scnr.nextInt();
+                    scnr.nextLine();  // consume newline left-over
+                    ScheduleViewer.getInstance().printDaySchedule(date);
                     System.out.println("This is your specified day schedule");
                     System.out.println("-----------------------");
                     System.out.println();
-                    // break;
+                    break;
                 } else if (option == 8) {
-                    //FIXME: Let the user submit a date to put in
-                    // This date (20200414) was used as a test sample
-                    ScheduleViewer.getInstance().printWeekSchedule(20200414);
+                    // printWeekSchedule();
                     // view or write the schedule for one specific week
+                    System.out.print("Enter the date (YYYYMMDD) to start the week's schedule: ");
+                    int weekDate = scnr.nextInt();
+                    scnr.nextLine();  // consume newline left-over
+                    ScheduleViewer.getInstance().printWeekSchedule(weekDate);
                     System.out.println("This is your specified week schedule");
                     System.out.println("-----------------------");
                     System.out.println();
                     break;
                 } else if (option == 9) {
-                    // printMonthSchedule();
-                    // view or write the schedule for one specific month
-                    System.out.println("This is your specified month schedule");
-                    System.out.println("-----------------------");
-                    System.out.println();
-                    // break;
-                }
+                    System.out.println("Enter the year and month as YYYYMM (e.g., 202204): ");
+                    if (scnr.hasNextLine()) {  // Check if there's a next line to consume
+                        scnr.nextLine();  // Consume any leftover newline characters in the buffer
+                    }
+                    String yearMonthInput = scnr.nextLine().trim();  // Read the actual input
+                
+                    if (yearMonthInput.length() == 6) {
+                        try {
+                            int year = Integer.parseInt(yearMonthInput.substring(0, 4));
+                            int month = Integer.parseInt(yearMonthInput.substring(4, 6));
+                
+                            if (month >= 1 && month <= 12) {
+                                ScheduleViewer.getInstance().printMonthSchedule(month, year);
+                                System.out.println("This is your specified month schedule");
+                                System.out.println("-----------------------");
+                                } 
+                            } catch (NumberFormatException e) {
+                            System.out.println("Invalid input format. Please enter the date in YYYYMM format.");
+                        }
+                    } else {
+                        System.out.println("Invalid input length. Please enter exactly 6 digits for the year and month (YYYYMM).");
+                    }
+                    break;
+                }                
             }
         }
     }

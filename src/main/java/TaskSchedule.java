@@ -252,16 +252,16 @@ public class TaskSchedule {
 
     public List<Task> getTimeFrame(int startDate, int endDate){
         List<Task> tasksInTimeFrame = new ArrayList<>();
-
+    
         ScheduleNode head = schedule.getHead();
         while (head != null){
             Task workingTask = head.getTask();
             int dateInstance = workingTask.getDateInstance();
-            if (dateInstance >= startDate || dateInstance <= endDate){
+            if (dateInstance >= startDate && dateInstance <= endDate){  // Corrected logical AND
                 tasksInTimeFrame.add(workingTask);
-                head = head.getNext();
             }
+            head = head.getNext();
         }
         return tasksInTimeFrame;
-    }
+    }    
 }

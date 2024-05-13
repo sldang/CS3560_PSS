@@ -35,27 +35,30 @@ public class DateCalculator {
         return new int[]{startDate, endDate};
     }
 
-    public static int[] getMonthDates(int month){
+    public static int[] getMonthDates(int month, int year) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         Calendar calendar = new GregorianCalendar();
 
-        //FIXME Note: Calendar uses 0-11 Format for Month when setting date
-        calendar.set(Calendar.YEAR, 2024);
-        calendar.set(Calendar.MONTH, month - 1);
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        // Set the calendar to the first day of the given month and year.
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month - 1);  // Month value in Calendar is 0-based (January = 0).
+        calendar.set(Calendar.DAY_OF_MONTH, 1);  // Set to the first day of the month.
 
+        // Format the start date and store it.
         String start = sdf.format(calendar.getTime());
-        calendar.set(Calendar.DAY_OF_MONTH, calendar.getMaximum(Calendar.DAY_OF_MONTH));
+
+        // Move the calendar to the last day of the same month.
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));  // Last day of the month.
+        
+        // Format the end date and store it.
         String end = sdf.format(calendar.getTime());
 
-        System.out.println(start);
-        System.out.println(end);
-
+        // Parse the start and end dates back into integers and return them.
         int startDate = Integer.parseInt(start);
         int endDate = Integer.parseInt(end);
 
         return new int[]{startDate, endDate};
-    }
+    }  
 
     public static int addDaysToDate(int date, int days){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
