@@ -55,9 +55,32 @@
                 return;
             }
             for (Task task : tasks) {
-                System.out.println("Task: " + task.getName() + " - Date: " + task.getDateInstance() + " - Time: " + task.getStartTime());
+                System.out.println("Task Name: " + task.getName());
+                System.out.println("Type: " + task.getType());
+                System.out.println("Start Date: " + formatDate(task.getDateInstance()));
+                System.out.println("Start Time: " + formatTime(task.getStartTime()));
+                System.out.println("Duration: " + task.getDuration() + " hours");
+        
+                if (task.getEndDate() > 0) {  // Assuming that endDate > 0 indicates a valid end date
+                    System.out.println("End Date: " + formatDate(task.getEndDate()));
+                }
+                if (task.getFrequency() > 0) {  // Assuming that frequency > 0 indicates a recurring task
+                    System.out.println("Frequency: Every " + task.getFrequency() + " days");
+                }
+                System.out.println("-----------------------");
             }
         }
+        
+        private String formatDate(int date) {
+            // Assuming date is in YYYYMMDD format
+            return date / 10000 + "-" + (date % 10000) / 100 + "-" + date % 100;
+        }
+        
+        private String formatTime(float time) {
+            int hours = (int) time;
+            int minutes = (int) ((time - hours) * 60);
+            return String.format("%02d:%02d", hours, minutes);
+        }        
     }
 
 
