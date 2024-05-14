@@ -182,12 +182,20 @@ public class Client {
     // Method to create a task based on user input
     private static Task createTaskFromUserInput(Scanner scanner) {
         TaskFactory taskFactory = TaskFactory.getInstance();
+        TaskSchedule schedule_copy = TaskSchedule.getInstance();
 
         String name = "";
         String type = null;
 
-        System.out.print("Enter task name: ");
-        name = scanner.nextLine();
+        boolean isUnique;
+        do {
+            System.out.print("Enter task name: ");
+            name = scanner.nextLine();
+            isUnique = schedule_copy.findTaskByName(name) == null;
+            if (!isUnique) {
+                System.out.println("A task with this name already exists. Please enter a unique name.");
+            }
+        } while (!isUnique);
 
         System.out.print("Enter task type: ");
         type = scanner.nextLine();
