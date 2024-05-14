@@ -39,7 +39,7 @@ public class Client {
                 // Create task from user input. Asks until user is done creating all the tasks they want
                 boolean done = false;
                 while (!done) {
-                    Task task = createTaskFromUserInput(scanner, schedule);
+                    Task task = createTaskFromUserInput(scanner);
                     if (task != null) {
                         schedule.addTask(task);
                     }
@@ -180,8 +180,9 @@ public class Client {
     }
 
     // Method to create a task based on user input
-    private static Task createTaskFromUserInput(Scanner scanner, TaskSchedule schedule) {
+    private static Task createTaskFromUserInput(Scanner scanner) {
         TaskFactory taskFactory = TaskFactory.getInstance();
+        TaskSchedule schedule_copy = TaskSchedule.getInstance();
 
         String name = "";
         String type = null;
@@ -190,7 +191,7 @@ public class Client {
         do {
             System.out.print("Enter task name: ");
             name = scanner.nextLine();
-            isUnique = schedule.findTaskByName(name) == null;
+            isUnique = schedule_copy.findTaskByName(name) == null;
             if (!isUnique) {
                 System.out.println("A task with this name already exists. Please enter a unique name.");
             }
