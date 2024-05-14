@@ -26,6 +26,7 @@ public class Client {
                 System.out.println("8 = View or write the schedule for one week");
                 System.out.println("9 = View or write the schedule for one month");
                 System.out.println("10 to exit the menu.");
+                System.out.println("11 [DEBUG] to view all added tasks");
                 System.out.print("Enter option: ");
                 option = scnr.nextInt();
                 System.out.println("");
@@ -83,7 +84,6 @@ public class Client {
                         Task taskToDelete = schedule.findTaskByName(taskNameToDelete);
                         if (taskToDelete != null) {
                             schedule.removeTask(taskToDelete);
-                            System.out.println("Task deleted");
                         } else {
                             System.out.println("Task does not exist.");
                         }
@@ -137,7 +137,6 @@ public class Client {
                     System.out.println("This is your specified day schedule");
                     System.out.println("-----------------------");
                     System.out.println();
-                    break;
                 } else if (option == 8) {
                     // printWeekSchedule();
                     // view or write the schedule for one specific week
@@ -148,7 +147,6 @@ public class Client {
                     System.out.println("This is your specified week schedule");
                     System.out.println("-----------------------");
                     System.out.println();
-                    break;
                 } else if (option == 9) {
                     System.out.println("Enter the year and month as YYYYMM (e.g., 202204): ");
                     if (scnr.hasNextLine()) {  // Check if there's a next line to consume
@@ -172,8 +170,11 @@ public class Client {
                     } else {
                         System.out.println("Invalid input length. Please enter exactly 6 digits for the year and month (YYYYMM).");
                     }
-                    break;
-                }                
+                } else if (option == 11) {
+                    System.out.println("Printing all tasks");
+                    List<Task> allTasks = schedule.listAllTasks();
+                    ScheduleViewer.getInstance().printTasks(allTasks);
+                }
             }
         }
     }
