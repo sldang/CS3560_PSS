@@ -1,14 +1,14 @@
 import static org.junit.jupiter.api.DynamicTest.stream;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class TaskSchedule {
 
     private ScheduleLinkedList schedule = new ScheduleLinkedList(); // This is a calendar map that represents each event in time
     private List<Task> tasksGeneral = new ArrayList<>(); // This is a generalized list of all events (Recurrings are only listed once)
-
+    private ScheduleLinkedList scheduleSave = new ScheduleLinkedList();
+    private List<Task> tasksGeneralSave = new ArrayList<>();
 
     private static TaskSchedule instance;
 
@@ -194,8 +194,7 @@ public class TaskSchedule {
     // update task by searching for it, and replacing it with the new updated information
     public boolean updateTask(String taskToUpdate, Task taskToReplace){
 
-        ScheduleLinkedList saveCopy = schedule.getCopy();
-        List<Task> saveGeneralCopy = List.copyOf(tasksGeneral);
+        this.saveInstance();
 
         // First, find the existing task by its name
         Task existingTask = findTaskByName(taskToUpdate);
@@ -215,8 +214,7 @@ public class TaskSchedule {
         } else {
             // Handle overlaps between tasks
             System.out.println("Cannot update task due to overlap with existing tasks.");
-            schedule = saveCopy;
-            tasksGeneral = saveGeneralCopy;
+            this.loadInstance();
             return false;
         }
     }
@@ -352,5 +350,13 @@ public class TaskSchedule {
         return tasksInTimeFrame;
     }
 
+    public void saveInstance(){
+        scheduleSave = schedule.getCopy();
+        tasksGeneralSave = new ArrayList<>(tasksGeneralSave);
+    }
 
+    public void loadInstance(){
+        schedule = scheduleSave.getCopy();
+        tasksGeneral = tasksGeneralSave;
+    }
 }

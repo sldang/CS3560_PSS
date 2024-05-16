@@ -123,16 +123,16 @@ public class Client {
                     System.out.print("Enter filename to load tasks from: ");
                     String loadFileName = scanner.nextLine();
                     List<Task> readTasks = fileSaving.readFromFile(loadFileName);
+                    schedule.saveInstance();
                     // Print the details of the tasks
                     if (readTasks != null && !readTasks.isEmpty()) {
                         for (Task task : readTasks) {
-                            try {
-                                TaskSchedule.getInstance().addTask(task);
-                            } catch (Exception e){
-                                System.out.println("Cannot add Task!");
-                            }
                             System.out.println("Task: " + task.getName() + ", Type: " + task.getType() +
-                                ", Start Date: " + task.getStartDate() + ", Duration: " + task.getDuration());
+                                    ", Start Date: " + task.getStartDate() + ", Duration: " + task.getDuration());
+                            if (!TaskSchedule.getInstance().addTask(task)){
+                                schedule.loadInstance();
+                                break;
+                            }
                         }
                     } else {
                         System.out.println("No tasks were read from the file or the file is empty.");
