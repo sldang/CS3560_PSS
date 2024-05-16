@@ -195,7 +195,7 @@ public class Client {
                 } else if (option == 11) {
                     System.out.println("Printing all tasks");
                     List<Task> allTasks = schedule.listAllTasks();
-                    ScheduleViewer.getInstance().printTasks(allTasks);
+                    ScheduleViewer.getInstance().printTasks(allTasks, false);
                 }
             }
         }

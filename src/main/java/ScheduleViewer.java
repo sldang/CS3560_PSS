@@ -19,7 +19,7 @@
         public List<Task> printDaySchedule(int date) {
             List<Task> dayTasks = TaskSchedule.getInstance().getTimeFrame(date, date);
             System.out.println("Day Schedule for " + date + ":");
-            printTasks(dayTasks);
+            printTasks(dayTasks, true);
             return dayTasks;
         }
 
@@ -28,7 +28,7 @@
             int[] timeFrame = DateCalculator.getWeekDates(date);
             List<Task> weekTasks = TaskSchedule.getInstance().getTimeFrame(timeFrame[0], timeFrame[1]);
             System.out.println("Week Schedule starting from " + timeFrame[0] + " to " + timeFrame[1] + ":");
-            printTasks(weekTasks);
+            printTasks(weekTasks, true);
             return weekTasks;
         }
 
@@ -36,7 +36,7 @@
         public List<Task> printPeriodSchedule(int begin, int end) {
             List<Task> periodTasks = TaskSchedule.getInstance().getTimeFrame(begin, end);
             System.out.println("Period Schedule from " + begin + " to " + end + ":");
-            printTasks(periodTasks);
+            printTasks(periodTasks, true);
             return periodTasks;
         }
 
@@ -46,19 +46,24 @@
             int[] timeFrame = DateCalculator.getMonthDates(month, year);  // Now correctly passes both month and year
             List<Task> tasksInFrame = TaskSchedule.getInstance().getTimeFrame(timeFrame[0], timeFrame[1]);
             System.out.println("Month Schedule for " + month + "/" + year + ":");
-            printTasks(tasksInFrame);
+            printTasks(tasksInFrame, true);
             return tasksInFrame;
         }
 
 
         // Print the tasks
-        public void printTasks(List<Task> tasks) {
+        public void printTasks(List<Task> tasks, boolean instanced) {
             if (tasks.isEmpty()) {
                 System.out.println("No tasks scheduled.");
                 return;
             }
             for (Task task : tasks) {
-                System.out.println(task.toStringInstance());
+                if (instanced){
+                    System.out.println(task.toStringInstance());
+                } else {
+                    System.out.println(task.toString());
+                }
+
 
                 System.out.println("-----------------------");
             }

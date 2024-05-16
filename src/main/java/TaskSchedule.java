@@ -26,17 +26,15 @@ public class TaskSchedule {
     //FIXME: This is a really long method and should be split up - Alex
     public void addTask(Task task){
         if (TaskFactory.getTranslation(task.getType()).equals("AntiTask")) {
-            int removeDate = task.getStartDate();
             ScheduleNode iteratedEvent = schedule.getHead();
             ScheduleNode previousEvent = null;
 
             boolean match = false;
 
-            //FIXME: fix this atrocity
+            // This will search through the ScheduleLinkedList for the particular instance
             while (iteratedEvent != null){
-                if (iteratedEvent.getTask().getDateInstance() == removeDate &&
-                    iteratedEvent.getTask().getStartTime() == task.getStartTime() &&
-                    iteratedEvent.getTask().getStartTime() + iteratedEvent.getTask().getDuration() == task.getStartTime() + task.getDuration() &&
+                // if (iteratedEvent is exactly the same time as task)
+                if (exactDateAndTime(iteratedEvent.getTask(), task) &&
                     TaskFactory.getTranslation(iteratedEvent.getTask().getType()).equals("RecurringTask"))
                 {
                     match = true;
@@ -73,8 +71,13 @@ public class TaskSchedule {
                 ScheduleNode nodeToAdd = new ScheduleNode(copiedTaskEvent);
                 nodeToAdd.setTask(copiedTaskEvent);
 
+
+                // This is a technique to find where to place the instance in the ScheduleLinkedList.
+                // It finds the node that is supposed to be "right after" the node to be inserted.
                 while (iteratedEvent != null && iteratedEvent.getTask().getDateInstance() <= iteratedDate){
-                    if (iteratedEvent.getTask().getDateInstance() == iteratedDate && iteratedEvent.getTask().getStartTime() >= task.getStartTime() + task.getDuration()){
+                    // if (iteratedEvent has same Date and it's start time is = or after task's endTime)
+                    if (iteratedEvent.getTask().getDateInstance() == iteratedDate &&
+                        iteratedEvent.getTask().getStartTime() >= task.getStartTime() + task.getDuration()){
                         break;
                     } else {
                         previousEvent = iteratedEvent;
@@ -89,15 +92,9 @@ public class TaskSchedule {
 
                 previousEvent = nodeToAdd;
 
-                //FIXME fix this atrocity
-                int testfrequency=10000000;
-                if (frequency == 7){
-                    testfrequency = 1;
-                  } else {
-                    testfrequency = 7;
-                  }
-
-                iteratedDate = DateCalculator.addDaysToDate(iteratedDate, testfrequency);
+                // This should change the iteratedDate to the frequency
+                // For this project, 1 = Daily, 7 = Weekly
+                iteratedDate = DateCalculator.addDaysToDate(iteratedDate, frequency);
             }
 
         } else {
@@ -106,7 +103,16 @@ public class TaskSchedule {
         }
     }
 
-    private void addTaskInstancesToSchedule(Task task){
+    // Returns True if both tasks occupy the same exact block
+    private boolean exactDateAndTime(Task taskA, Task taskB){
+        int taskADate = taskA.getDateInstance();
+        int taskBDate = taskB.getDateInstance();
+        float taskAStartTime = taskA.getStartTime();
+        float taskBStartTime = taskB.getStartTime();
+        float taskADuration = taskA.getDuration();
+        float taskBDuration = taskB.getDuration();
+
+        return taskADate == taskBDate && taskAStartTime == taskBStartTime && taskADuration == taskBDuration;
 
     }
 
@@ -116,12 +122,11 @@ public class TaskSchedule {
         ScheduleNode node = schedule.getHead();
         ScheduleNode prevNode = null;
 
-        String type = task.getType();
-
         //Scenarios
         //Removing an AntiTask and there is a task filling in it
         //Removing a Recurring task and there is an AntiTask
 
+        // Removing an AntiTask
         if (TaskFactory.getTranslation(task.getType()).equals("AntiTask")){
             Task correspondingRecurring = null;
             while (node != null){
@@ -134,7 +139,7 @@ public class TaskSchedule {
                 }
             }
             if (correspondingRecurring != null){
-                // Found, check if another task uses the same time period.
+                // Found, check if  adjacent tasks would cause a conflict.
                 ScheduleNode nextNode = node.getNext();
                 if (nextNode != null &&
                         nextNode.getTask().getDateInstance() == task.getDateInstance() &&
@@ -143,6 +148,12 @@ public class TaskSchedule {
                     // There is an overlap, cannot proceed.
                     System.err.println("Deletion of the AntiTask would cause a conflict!");
                     // Maybe print about the dates + durations of both tasks
+
+                } else if (prevNode != null &&
+                        prevNode.getTask().getDateInstance() == task.getDateInstance() &&
+                        checkDurationOverlap(prevNode.getTask(), task)){
+
+                    System.err.println("Deletion of the AntiTask would cause a conflict!");
 
                 } else {
                     // Perform a swap
@@ -158,13 +169,15 @@ public class TaskSchedule {
                 System.err.println("Task was not found!");
             }
         } else {
+            // Removing a Recurring or Transient Task
             while (node != null){
                 //System.out.println("Iterated through: " + node.getTask().getName());
                 if (node.getTask().getName().equals(name)){
                     schedule.remove(node);
+                // If current node is an AntiTask, then check if it's corresponding Recurring matches the name
                 } else if ((node.getCorrespondingTask() != null && node.getCorrespondingTask().getName().equals(name))){
                     schedule.remove(node);
-                    tasksGeneral.remove(node.getTask());
+                    tasksGeneral.remove(node.getTask()); // remove AntiTask
                 }
                 node = node.getNext();
             }
@@ -243,14 +256,9 @@ public class TaskSchedule {
             }
 
             if (existingTaskDateInstance > iteratedDate){
-                //FIXME fix this atrocity too
-                int testfrequency=10000000;
-                if (frequency == 7){
-                    testfrequency = 1;
-                } else {
-                    testfrequency = 7;
-                }
-                iteratedDate = DateCalculator.addDaysToDate(iteratedDate, testfrequency);
+                // This should change the iteratedDate to the frequency
+                // For this project, 1 = Daily, 7 = Weekly
+                iteratedDate = DateCalculator.addDaysToDate(iteratedDate, frequency);
             } else {
                 workingScheduleNode = workingScheduleNode.getNext();
             }
@@ -265,7 +273,11 @@ public class TaskSchedule {
         float taskBStart = taskB.getStartTime();
         float taskAEnd = taskAStart + taskA.getDuration();
         float taskBEnd = taskBStart + taskB.getDuration();
-
+        // Bad:             [==B=[]=A==]
+        // Bad:             [==A=[]=B==]
+        // Bad:             [==[B]A==]
+        // Bad (Implicit):  [==[A]B==]
+        // Good:            [==A==][==B==]
         if (taskAStart >= taskBStart && taskAStart < taskBEnd){
             return true;
         } else if (taskAEnd > taskBStart && taskAEnd <= taskBEnd){
@@ -299,5 +311,7 @@ public class TaskSchedule {
             head = head.getNext();
         }
         return tasksInTimeFrame;
-    }    
+    }
+
+
 }
