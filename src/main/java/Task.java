@@ -191,6 +191,7 @@ class TransientTask implements Task {
     private float startTime;
     private float duration;
     private int date;
+    private int frequency;
 
     // Contructor
     public TransientTask() {
@@ -287,7 +288,7 @@ class TransientTask implements Task {
     @Override
     public void setFrequency(int frequency) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setFrequency'");
+        this.frequency = 1;
     }
 
     @Override
@@ -299,7 +300,7 @@ class TransientTask implements Task {
     @Override
     public void setEndDate(int endDate) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setEndDate'");
+        this.date =  endDate;
     }
 
     @Override

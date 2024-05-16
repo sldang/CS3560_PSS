@@ -175,13 +175,19 @@ public class TaskSchedule {
 
     // update task by searching for it, and replacing it with the new updated information
     public void updateTask(String taskToUpdate, Task taskToReplace){
-        // Finding the task by its name by searching through all the tasks we have already
-        // Used to store the existing tasks info
+
+        // First, find the existing task by its name
         Task existingTask = findTaskByName(taskToUpdate);
 
-        if (existingTask != null) {
-            // Updates the existing task directly. (task to update) with the new task (task to replace) info
-            // Moving all info from taskToReplace to taskToUpdate
+        if (existingTask == null) {
+            // Handle task not found case
+            System.out.println("The task '" + taskToUpdate + "' does not exist or cannot be found.");
+            return;
+        }
+
+        // Next, check for overlaps with other tasks
+        if (!checkForOverlaps(taskToReplace)) {
+            // If no overlaps, proceed to update the task
             existingTask.setName(taskToReplace.getName());
             existingTask.setStartDate(taskToReplace.getStartDate());
             existingTask.setEndDate(taskToReplace.getEndDate());
@@ -189,18 +195,10 @@ public class TaskSchedule {
             existingTask.setDuration(taskToReplace.getDuration());
             existingTask.setFrequency(taskToReplace.getFrequency());
 
-            // check for overlaps with other tasks in the PSS
-            if (!checkForOverlaps(existingTask)) {
-               // Successful update of task
-               System.out.println("Task " + taskToUpdate + " has been updated successfully!");
-            } else {
-                // handles overlaps between two tasks case.
-                System.out.println("Cannot update task due to overlap with existing tasks.");
-            }
-        }
-        else {
-            // handles task not found case.
-            System.out.println("The task " + taskToUpdate + " does not exist or cannot be found.");
+            System.out.println("Task '" + taskToUpdate + "' has been updated successfully!");
+        } else {
+            // Handle overlaps between tasks
+            System.out.println("Cannot update task due to overlap with existing tasks.");
         }
     }
 
