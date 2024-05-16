@@ -102,7 +102,7 @@ public class TaskSchedule {
 
         } else {
             //FIXME: Can't add task. Maybe throw an error here. - Alex
-            System.out.println("u stupid");
+            System.out.println("Try Again.");
         }
     }
 
