@@ -292,7 +292,9 @@ public class TaskSchedule {
             Task workingTask = head.getTask();
             int dateInstance = workingTask.getDateInstance();
             if (dateInstance >= startDate && dateInstance <= endDate){  // Corrected logical AND
-                tasksInTimeFrame.add(workingTask);
+                if (!TaskFactory.getTranslation(workingTask.getType()).equals("AntiTask")){
+                    tasksInTimeFrame.add(workingTask);
+                }
             }
             head = head.getNext();
         }

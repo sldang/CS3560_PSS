@@ -21,16 +21,16 @@ public class FileSaving {
 
     public void writeTasksToFile(String fileName, List<Task> newTasks) {
         File file = new File(fileName);
-        JSONArray existingTasks = readJSONArrayFromFile(fileName); // Load the existing JSON array from the file
-
+        //JSONArray existingTasks = readJSONArrayFromFile(fileName); // Load the existing JSON array from the file
+        JSONArray taskJSONArray = new JSONArray();
         // Convert new tasks to JSON and append them to the existing JSON array
         for (Task task : newTasks) {
-            existingTasks.put(task.toJSONObject());
+            taskJSONArray.put(task.toJSONObject());
         }
 
         // Write the updated JSON array back to the file
         try (PrintWriter out = new PrintWriter(new FileWriter(file))) {
-            out.write(existingTasks.toString(4)); // Writing with indentation for readability
+            out.write(taskJSONArray.toString(4)); // Writing with indentation for readability
         } catch (IOException e) {
             e.printStackTrace();
         }

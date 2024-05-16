@@ -16,17 +16,17 @@ public class Client {
             // loops until you choose the option to exit the menu
             for (;;) {
                 System.out.println("PSS Client Menu Selection Screen");
-                System.out.println("1 = Create a task");
-                System.out.println("2 = View a task");
-                System.out.println("3 = Delete a task");
-                System.out.println("4 = Edit a task");
-                System.out.println("5 = Write the schedule to a json file");
-                System.out.println("6 = Read the schedule to a json file");
-                System.out.println("7 = View or write the schedule for one day");
-                System.out.println("8 = View or write the schedule for one week");
-                System.out.println("9 = View or write the schedule for one month");
-                System.out.println("10 to exit the menu.");
-                System.out.println("11 [DEBUG] to view all added tasks");
+                System.out.println("1  = Create a task");
+                System.out.println("2  = View a task");
+                System.out.println("3  = Delete a task");
+                System.out.println("4  = Edit a task");
+                System.out.println("5  = Write the schedule to a json file");
+                System.out.println("6  = Read the schedule to a json file");
+                System.out.println("7  = View or write the schedule for one day");
+                System.out.println("8  = View or write the schedule for one week");
+                System.out.println("9  = View or write the schedule for one month");
+                System.out.println("10 = to exit the menu.");
+                System.out.println("11 = to view all added tasks");
                 System.out.print("Enter option: ");
                 option = scnr.nextInt();
                 System.out.println("");
@@ -55,7 +55,7 @@ public class Client {
                     System.out.println("-----------------------");
                     System.out.println();
                 } else if (option == 2) {
-                    // THIS IS TO VIEW 1 SPECIFIC TASK details
+                    // View 1 specific task detail
                     System.out.println("\nTask Search: ");
                     System.out.print("Enter the name of the task to be viewed: ");
                     String taskNameToView = scanner.nextLine();
@@ -71,8 +71,6 @@ public class Client {
                     System.out.println("-----------------------");
                     System.out.println();
                 } else if (option == 3) {
-                    // schedule.removeTask(schedule.findTaskByName("Intern Interview"));
-                    // System.out.println("Task deleted");
                     System.out.print("Enter the name of the task to be deleted: ");
                         String taskNameToDelete = scanner.nextLine();
                         Task taskToDelete = schedule.findTaskByName(taskNameToDelete);
@@ -116,18 +114,13 @@ public class Client {
                       System.out.println("-----------------------");
                       System.out.println();
                 } else if (option == 5) {
-                    // writeTasksToFile();
                     // Write the schedule to a json file
                      // Save tasks to file
-                    System.out.print("Enter filename to save tasks: (Make sure to write your new schedule to a new json file and NOT to an existing json file.)");
-                    String saveFileName = scanner.nextLine();
-                    fileSaving.writeTasksToFile(saveFileName, schedule.listAllTasks());
-                    System.out.println("Tasks saved to " + saveFileName);
+                    handleUserSaveToFileName(scanner, schedule.listAllTasks());
                     System.out.println("-----------------------");
                     System.out.println();
                 } else if (option == 6) {
-                    // readFromFile();
-                    // read the schedule to a json file
+                    // read the schedule from a json file
                     System.out.print("Enter filename to load tasks from: ");
                     String loadFileName = scanner.nextLine();
                     List<Task> readTasks = fileSaving.readFromFile(loadFileName);
@@ -137,7 +130,7 @@ public class Client {
                             try {
                                 TaskSchedule.getInstance().addTask(task);
                             } catch (Exception e){
-                                System.out.println("u stupid");
+                                System.out.println("Cannot add Task!");
                             }
                             System.out.println("Task: " + task.getName() + ", Type: " + task.getType() +
                                 ", Start Date: " + task.getStartDate() + ", Duration: " + task.getDuration());
@@ -148,23 +141,27 @@ public class Client {
                     System.out.println("-----------------------");
                     System.out.println();
                 } else if (option == 7) {
-                    // printDaySchedule();
                     // view or write the schedule for one specific day
                     System.out.print("Enter the date (YYYYMMDD) for the day's schedule: ");
                     int date = scnr.nextInt();
                     scnr.nextLine();  // consume newline left-over
-                    ScheduleViewer.getInstance().printDaySchedule(date);
+                    List<Task> viewedTasks = ScheduleViewer.getInstance().printDaySchedule(date);
                     System.out.println("This is your specified day schedule");
+                    if (writeToFileAfterViewing(scanner)){
+                        handleUserSaveToFileName(scanner, viewedTasks);
+                    }
                     System.out.println("-----------------------");
                     System.out.println();
                 } else if (option == 8) {
-                    // printWeekSchedule();
                     // view or write the schedule for one specific week
                     System.out.print("Enter the date (YYYYMMDD) to start the week's schedule: ");
                     int weekDate = scnr.nextInt();
                     scnr.nextLine();  // consume newline left-over
-                    ScheduleViewer.getInstance().printWeekSchedule(weekDate);
+                    List<Task> viewedTasks = ScheduleViewer.getInstance().printWeekSchedule(weekDate);
                     System.out.println("This is your specified week schedule");
+                    if (writeToFileAfterViewing(scanner)){
+                        handleUserSaveToFileName(scanner, viewedTasks);
+                    }
                     System.out.println("-----------------------");
                     System.out.println();
                 } else if (option == 9) {
@@ -180,8 +177,13 @@ public class Client {
                             int month = Integer.parseInt(yearMonthInput.substring(4, 6));
                 
                             if (month >= 1 && month <= 12) {
-                                ScheduleViewer.getInstance().printMonthSchedule(month, year);
+                                List<Task> viewedTasks = ScheduleViewer.getInstance().printMonthSchedule(month, year);
                                 System.out.println("This is your specified month schedule");
+
+                                if (writeToFileAfterViewing(scanner)){
+                                    handleUserSaveToFileName(scanner, viewedTasks);
+                                }
+
                                 System.out.println("-----------------------");
                                 } 
                             } catch (NumberFormatException e) {
@@ -255,5 +257,25 @@ public class Client {
         }
 
         return task;
+    }
+
+
+    private static void handleUserSaveToFileName(Scanner scanner, List<Task> tasks){
+        System.out.print("Enter filename to save tasks: (Make sure to write your new schedule to a new json file and NOT to an existing json file.)");
+        String saveFileName = scanner.nextLine();
+        FileSaving.getInstance().writeTasksToFile(saveFileName, tasks);
+        System.out.println("Tasks saved to " + saveFileName);
+    }
+
+    // Method to return True if user requests to write to file after viewing a schedule
+    private static boolean writeToFileAfterViewing(Scanner scanner){
+        System.out.print("Do you want to save schedule to file? (yes/no): ");
+        String userInput = scanner.nextLine().toLowerCase(); // Convert input to lowercase for comparison
+        System.out.println();
+        if (userInput.equals("yes")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

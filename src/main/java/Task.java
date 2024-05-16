@@ -33,6 +33,7 @@ public interface Task {
    void setFrequency(int frequency);
 
    Task getCopyOf();
+   String toStringInstance();
 }
 
 
@@ -68,6 +69,7 @@ class RecurringTask implements Task {
         jsonObject.put("Type", this.getType());
         jsonObject.put("StartDate", this.getStartDate());
         jsonObject.put("StartTime", this.getStartTime());
+        jsonObject.put("DateInstance", this.getDateInstance());
         jsonObject.put("Duration", this.getDuration());
         jsonObject.put("EndDate", this.getEndDate());
         jsonObject.put("Frequency", this.getFrequency());
