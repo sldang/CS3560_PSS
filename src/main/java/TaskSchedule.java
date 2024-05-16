@@ -245,9 +245,32 @@ public class TaskSchedule {
         while (iteratedDate <= endDate && workingScheduleNode != null){
             Task existingTask = workingScheduleNode.getTask();
             int existingTaskDateInstance = existingTask.getDateInstance();
+            boolean midnightLeak = false;
+
+            // Check for midnight leak here
+            // If they have the same date and no midnight
+            // If existingTask leaks over midnight and the iteratedDate happens on the next day (existingTask + 1)
+            // If iteratedDate has a leak over midnight and existingTask happens on the next day (existingTask - 1)
+            // If they have the same date and they both leak (existing + 1, iterated + 1);
+            // if ExistingTask leaks over midnight and IteratedDate happens on the same day (==)
+            // if iteratedDate leaks over midnight and Existing Date happens on the same day (==)
+
+            //Final
+            // If existingDate has a midnight leak, check existingDate and existingDate+1
+            // If iteratedDate has a midnight leak, check iteratedDate and iteratedDate+1
+
+            int offset = 0;
+            if (existingTask.getStartTime() + existingTask.getDuration() > 24){
+                offset -= 1;
+                midnightLeak = true;
+            }
+            if (task.getStartTime() + task.getDuration() > 24){
+                offset += 1;
+                midnightLeak = true;
+            }
 
             // If dates collide. Else, iterate next
-            if (existingTaskDateInstance == iteratedDate){
+            if (existingTaskDateInstance == iteratedDate || (midnightLeak && existingTaskDateInstance == iteratedDate + offset)){
                 // Possible Conflict, Check Durations
 
                 // if durations collide. Else, iterate next
@@ -279,18 +302,28 @@ public class TaskSchedule {
         float taskBStart = taskB.getStartTime();
         float taskAEnd = taskAStart + taskA.getDuration();
         float taskBEnd = taskBStart + taskB.getDuration();
-        // Bad:             [==B=[]=A==]
-        // Bad:             [==A=[]=B==]
-        // Bad:             [==[B]A==]
-        // Bad (Implicit):  [==[A]B==]
-        // Good:            [==A==][==B==]
-        if (taskAStart >= taskBStart && taskAStart < taskBEnd){
-            return true;
-        } else if (taskAEnd > taskBStart && taskAEnd <= taskBEnd){
-            return true;
-        } else if (taskAStart < taskBStart && taskAEnd > taskBEnd){
-            return true;
+        for (int i = -1; i <= 1; i++){
+
+            // Simple way to test for durationOverlaps with midnight leaks
+            float taskAAdjustedStart = taskAStart + i * 24;
+            float taskAAdjustedEnd = taskAEnd + i * 24;
+
+
+            // Bad:             [==B=[]=A==]
+            // Bad:             [==A=[]=B==]
+            // Bad:             [==[B]A==]
+            // Bad (Implicit):  [==[A]B==]
+            // Good:            [==A==][==B==]
+            if (taskAAdjustedStart >= taskBStart && taskAAdjustedStart < taskBEnd){
+                return true;
+            } else if (taskAAdjustedEnd > taskBStart && taskAAdjustedEnd <= taskBEnd){
+                return true;
+            } else if (taskAAdjustedStart < taskBStart && taskAAdjustedEnd > taskBEnd){
+                return true;
+            }
         }
+
+
         return false;
     }
 
