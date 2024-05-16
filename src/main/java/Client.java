@@ -90,11 +90,42 @@ public class Client {
                     System.out.println("-----------------------");
                     System.out.println();
                 } else if (option == 4) {
-                    // editTask();
-                    System.out.println("Task edited");
-                    System.out.println("-----------------------");
-                    System.out.println();
-                    // break;
+                      // Prompt for the name of the task to update
+                      System.out.print("Enter the name of the task to update: ");
+                      String taskNameToUpdate = scanner.nextLine();
+
+                      // Find the existing task
+                      Task existingTask = schedule.findTaskByName(taskNameToUpdate);
+                      if (existingTask == null) {
+                         System.out.println("Task not found.");
+                      } else {
+                         // Display current task details
+                         System.out.println("Current task details:");
+                         System.out.println("Name: " + existingTask.getName());
+                         System.out.println("Start Date: " + existingTask.getStartDate());
+                         System.out.println("End Date: " + existingTask.getEndDate());
+                         System.out.println("Start Time: " + existingTask.getStartTime());
+                         System.out.println("Duration: " + existingTask.getDuration());
+                         System.out.println("Frequency: " + existingTask.getFrequency());
+                         System.out.println();
+                         System.out.println("Updated Task Details:");
+                         System.out.println();
+  
+                         // Create a new task with updated details from user input
+                        Task updatedTask = createTaskFromUserInput(scanner);
+
+                        // Update task in the schedule
+                        if (!schedule.checkForOverlaps(updatedTask)) {
+                           schedule.updateTask(taskNameToUpdate, updatedTask);
+                           System.out.println();
+                           System.out.println("Task updated successfully.");
+                        } else {
+                            System.out.println();
+                           System.out.println("Task update failed.");
+                         }
+                      }
+                      System.out.println("-----------------------");
+                      System.out.println();
                 } else if (option == 5) {
                     // writeTasksToFile();
                     // Write the schedule to a json file
