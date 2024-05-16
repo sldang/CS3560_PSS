@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 public class ScheduleLinkedList {
     private ScheduleNode head;
+    private ScheduleNode tail;
 
     public ScheduleLinkedList() {
         this.head = null;
+        this.tail = null;
     }
 
     public void addFirst(ScheduleNode scheduleNode) {
@@ -15,6 +17,9 @@ public class ScheduleLinkedList {
     
             scheduleNode.setNext(head);
             head = scheduleNode;
+            if (tail == null){
+                tail = scheduleNode;
+            }
         }
     }
     
@@ -23,23 +28,24 @@ public class ScheduleLinkedList {
         if (head == null) {
             head = scheduleNode;
         } else {
-            ScheduleNode current = head;
-            while (current.getNext() != null) {
-                current = current.getNext();
-            }
-            current.setNext(scheduleNode);
+            tail.setNext(scheduleNode);
         }
+        tail = scheduleNode;
     }
 
     public void addAfter(ScheduleNode before, ScheduleNode after) {
         if (before != null && after != null) {
             after.setNext(before.getNext());
             before.setNext(after);
+            if (tail.equals(before)){
+                tail = after;
+            }
         }
     }
 
     public void clear() {
         head = null;
+        tail = null;
     }
 
     public boolean contains(ScheduleNode scheduleNode) {
@@ -60,6 +66,9 @@ public class ScheduleLinkedList {
 
         if (head.equals(scheduleNode)) {
             head = head.getNext();
+            if (tail.equals(scheduleNode)){
+                tail = head; //= null
+            }
             return;
         }
 
@@ -67,6 +76,9 @@ public class ScheduleLinkedList {
         while (current.getNext() != null) {
             if (current.getNext().equals(scheduleNode)) {
                 current.setNext(current.getNext().getNext());
+                if (tail.equals(scheduleNode)){
+                    tail = current;
+                }
                 return;
             }
             current = current.getNext();
@@ -75,7 +87,10 @@ public class ScheduleLinkedList {
 
     public void removeFirst() {
         if (head != null) {
-            head = head.getNext();
+            if (tail.equals(head)){
+                tail = null;
+            }
+            head = head.getNext(); //=null if first
         }
     }
 
@@ -86,6 +101,7 @@ public class ScheduleLinkedList {
 
         if (head.getNext() == null) {
             head = null;
+            tail = null;
             return;
         }
 
@@ -93,6 +109,7 @@ public class ScheduleLinkedList {
         while (current.getNext().getNext() != null) {
             current = current.getNext();
         }
+        tail = current;
         current.setNext(null);
     }
 
@@ -110,6 +127,16 @@ public class ScheduleLinkedList {
 
     public ScheduleNode getHead(){
         return head;
+    }
+
+    public ScheduleLinkedList getCopy(){
+        ScheduleLinkedList copy = new ScheduleLinkedList();
+        ScheduleNode node = head;
+        while (node != null){
+            copy.addLast(node);
+            node = node.getNext();
+        }
+        return copy;
     }
 }
 

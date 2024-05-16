@@ -102,8 +102,7 @@ public class Client {
                         Task updatedTask = createTaskFromUserInput(scanner);
 
                         // Update task in the schedule
-                        if (!schedule.checkForOverlaps(updatedTask)) {
-                           schedule.updateTask(taskNameToUpdate, updatedTask);
+                        if (schedule.updateTask(taskNameToUpdate, updatedTask)) {
                            System.out.println();
                            System.out.println("Task updated successfully.");
                         } else {

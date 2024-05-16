@@ -24,7 +24,7 @@ public class TaskSchedule {
     }
 
     //FIXME: This is a really long method and should be split up - Alex
-    public void addTask(Task task){
+    public boolean addTask(Task task){
         if (TaskFactory.getTranslation(task.getType()).equals("AntiTask")) {
             ScheduleNode iteratedEvent = schedule.getHead();
             ScheduleNode previousEvent = null;
@@ -58,6 +58,9 @@ public class TaskSchedule {
 
             if (!match){
                 System.out.println("Antitask FAILED to find another task");
+                return false;
+            } else {
+                return true;
             }
         } else if (!checkForOverlaps(task)){
             tasksGeneral.add(task);
@@ -96,10 +99,12 @@ public class TaskSchedule {
                 // For this project, 1 = Daily, 7 = Weekly
                 iteratedDate = DateCalculator.addDaysToDate(iteratedDate, frequency);
             }
+            return true;
 
         } else {
             //FIXME: Can't add task. Maybe throw an error here. - Alex
             System.out.println("Try Again.");
+            return false;
         }
     }
 
@@ -187,7 +192,10 @@ public class TaskSchedule {
     }
 
     // update task by searching for it, and replacing it with the new updated information
-    public void updateTask(String taskToUpdate, Task taskToReplace){
+    public boolean updateTask(String taskToUpdate, Task taskToReplace){
+
+        ScheduleLinkedList saveCopy = schedule.getCopy();
+        List<Task> saveGeneralCopy = List.copyOf(tasksGeneral);
 
         // First, find the existing task by its name
         Task existingTask = findTaskByName(taskToUpdate);
@@ -195,23 +203,21 @@ public class TaskSchedule {
         if (existingTask == null) {
             // Handle task not found case
             System.out.println("The task '" + taskToUpdate + "' does not exist or cannot be found.");
-            return;
+            return false;
         }
 
-        // Next, check for overlaps with other tasks
-        if (!checkForOverlaps(taskToReplace)) {
-            // If no overlaps, proceed to update the task
-            existingTask.setName(taskToReplace.getName());
-            existingTask.setStartDate(taskToReplace.getStartDate());
-            existingTask.setEndDate(taskToReplace.getEndDate());
-            existingTask.setStartTime(taskToReplace.getStartTime());
-            existingTask.setDuration(taskToReplace.getDuration());
-            existingTask.setFrequency(taskToReplace.getFrequency());
+        this.removeTask(existingTask);
 
+        // Attempt to add task
+        if (addTask(taskToReplace)) {
             System.out.println("Task '" + taskToUpdate + "' has been updated successfully!");
+            return true;
         } else {
             // Handle overlaps between tasks
             System.out.println("Cannot update task due to overlap with existing tasks.");
+            schedule = saveCopy;
+            tasksGeneral = saveGeneralCopy;
+            return false;
         }
     }
 
