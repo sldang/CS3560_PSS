@@ -107,6 +107,9 @@ public class Client {
                          System.out.println("Start Time: " + existingTask.getStartTime());
                          System.out.println("Duration: " + existingTask.getDuration());
                          System.out.println("Frequency: " + existingTask.getFrequency());
+                         System.out.println();
+                         System.out.println("Updated Task Details:");
+                         System.out.println();
   
                          // Create a new task with updated details from user input
                         Task updatedTask = createTaskFromUserInput(scanner);
@@ -114,8 +117,10 @@ public class Client {
                         // Update task in the schedule
                         if (!schedule.checkForOverlaps(updatedTask)) {
                            schedule.updateTask(taskNameToUpdate, updatedTask);
+                           System.out.println();
                            System.out.println("Task updated successfully.");
                         } else {
+                            System.out.println();
                            System.out.println("Task update failed.");
                          }
                       }
