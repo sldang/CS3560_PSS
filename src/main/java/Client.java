@@ -63,13 +63,7 @@ public class Client {
                     if (taskToView != null) {
                         System.out.println("");
                         System.out.println("Here are the specific task details:");
-                        System.out.println("Task Name: " + taskToView.getName());
-                        System.out.println("Type: " + taskToView.getType());
-                        System.out.println("Start Date: " + taskToView.getStartDate());
-                        System.out.println("End Date: " + taskToView.getEndDate());
-                        System.out.println("Start Time: " + taskToView.getStartTime());
-                        System.out.println("Duration: " + taskToView.getDuration());
-                        System.out.println("Frequency: " + (taskToView.getFrequency() > 0 ? taskToView.getFrequency() + " days " : "N/A"));
+                        System.out.println(taskToView);
                         System.out.println("Task viewed!");
                     } else {
                         System.out.println("Task does not exist.");
@@ -101,12 +95,7 @@ public class Client {
                       } else {
                          // Display current task details
                          System.out.println("Current task details:");
-                         System.out.println("Name: " + existingTask.getName());
-                         System.out.println("Start Date: " + existingTask.getStartDate());
-                         System.out.println("End Date: " + existingTask.getEndDate());
-                         System.out.println("Start Time: " + existingTask.getStartTime());
-                         System.out.println("Duration: " + existingTask.getDuration());
-                         System.out.println("Frequency: " + existingTask.getFrequency());
+                         System.out.println(existingTask);
                          System.out.println();
                          System.out.println("Updated Task Details:");
                          System.out.println();

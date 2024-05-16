@@ -23,9 +23,6 @@ public interface Task {
    int getEndDate();
    void setEndDate(int endDate);
 
-   List<Task> getLinkedTasks();
-   void addLinkedTask(Task task);
-
    JSONObject toJSONObject();
    void fromJSONObject(JSONObject jsonObject);
 
@@ -48,11 +45,10 @@ class RecurringTask implements Task {
     private int endDate;
     private int frequency;
     private int dateInstance;
-    private List<Task> linkedTasks;
 
     // Contructor
     public RecurringTask() {
-        linkedTasks = new ArrayList<>();
+
     }
 
     // Constructor from JSONObject
@@ -141,16 +137,6 @@ class RecurringTask implements Task {
     }
 
     @Override
-    public List<Task> getLinkedTasks() {
-       return linkedTasks;
-    }
-
-    @Override
-    public void addLinkedTask(Task task) {
-        linkedTasks.add(task);
-    }
-
-    @Override
     public int getFrequency() {
         return frequency;
     }
@@ -182,6 +168,25 @@ class RecurringTask implements Task {
     @Override
     public void setDateInstance(int dateInstance) {
         this.dateInstance = dateInstance;
+    }
+
+    @Override
+    public String toString(){
+        return  "Name: " + this.name + "\n" +
+                "Type: " + this.type + "\n" +
+                "Start Date: " + this.startDate + "\n" +
+                "End Date: " + this.endDate + "\n" +
+                "Start Time: " + this.startTime + "\n" +
+                "Duration: " + this.duration + "\n" +
+                "Frequency: " + this.frequency;
+    }
+
+    public String toStringInstance(){
+        return  "Name: " + this.name + "\n" +
+                "Type: " + this.type + "\n" +
+                "Date: " + this.dateInstance + "\n" +
+                "Start Time: " + this.startTime + "\n" +
+                "Duration: " + this.duration + "\n";
     }
 }
 
@@ -281,38 +286,22 @@ class TransientTask implements Task {
 
     @Override
     public int getFrequency() {
-        // TODO Auto-generated method stub
         return 1;
     }
 
     @Override
     public void setFrequency(int frequency) {
-        // TODO Auto-generated method stub
         this.frequency = 1;
     }
 
     @Override
     public int getEndDate() {
-        // TODO Auto-generated method stub
         return getStartDate();
     }
 
     @Override
     public void setEndDate(int endDate) {
-        // TODO Auto-generated method stub
         this.date =  endDate;
-    }
-
-    @Override
-    public List<Task> getLinkedTasks() {
-        // TODO Auto-generated method stub
-        return new ArrayList<>();
-    }
-
-    @Override
-    public void addLinkedTask(Task task) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addLinkedTask'");
     }
 
     @Override
@@ -325,6 +314,23 @@ class TransientTask implements Task {
         copyTask.setStartDate(this.getStartDate());
 
         return copyTask;
+    }
+
+    @Override
+    public String toString(){
+        return  "Name: " + this.name + "\n" +
+                "Type: " + this.type + "\n" +
+                "Date: " + this.date + "\n" +
+                "Start Time: " + this.startTime + "\n" +
+                "Duration: " + this.duration + "\n";
+    }
+
+    public String toStringInstance(){
+        return  "Name: " + this.name + "\n" +
+                "Type: " + this.type + "\n" +
+                "Date: " + this.date + "\n" +
+                "Start Time: " + this.startTime + "\n" +
+                "Duration: " + this.duration + "\n";
     }
 }
 
@@ -448,25 +454,29 @@ class AntiTask implements Task {
 
     @Override
     public int getEndDate() {
-        // TODO Auto-generated method stub
         return getStartDate();
     }
 
     @Override
     public void setEndDate(int endDate) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setEndDate'");
+        this.startDate = endDate;
+        this.dateInstance = endDate;
     }
 
     @Override
-    public List<Task> getLinkedTasks() {
-       return linkedTasks;
+    public String toString(){
+        return  "Name: " + this.name + "\n" +
+                "Type: " + this.type + "\n" +
+                "Date: " + this.dateInstance + "\n" +
+                "Start Time: " + this.startTime + "\n" +
+                "Duration: " + this.duration + "\n";
     }
 
-    @Override
-    public void addLinkedTask(Task task) {
-        linkedTasks.add(task);
+    public String toStringInstance(){
+        return  "Name: " + this.name + "\n" +
+                "Type: " + this.type + "\n" +
+                "Date: " + this.dateInstance + "\n" +
+                "Start Time: " + this.startTime + "\n" +
+                "Duration: " + this.duration + "\n";
     }
-
-
 }
