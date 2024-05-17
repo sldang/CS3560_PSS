@@ -144,10 +144,12 @@ public class Client {
                     System.out.print("Enter the date (YYYYMMDD) for the day's schedule: ");
                     int date = scnr.nextInt();
                     scnr.nextLine();  // consume newline left-over
-                    List<Task> viewedTasks = ScheduleViewer.getInstance().printDaySchedule(date);
-                    System.out.println("This is your specified day schedule");
-                    if (writeToFileAfterViewing(scanner)){
-                        handleUserSaveToFileName(scanner, viewedTasks);
+                    if (DateCalculator.isValidDate(date)){
+                        List<Task> viewedTasks = ScheduleViewer.getInstance().printDaySchedule(date);
+                        System.out.println("This is your specified day schedule");
+                        if (writeToFileAfterViewing(scanner)){
+                            handleUserSaveToFileName(scanner, viewedTasks);
+                        }
                     }
                     System.out.println("-----------------------");
                     System.out.println();
@@ -155,11 +157,13 @@ public class Client {
                     // view or write the schedule for one specific week
                     System.out.print("Enter the date (YYYYMMDD) to start the week's schedule: ");
                     int weekDate = scnr.nextInt();
-                    scnr.nextLine();  // consume newline left-over
-                    List<Task> viewedTasks = ScheduleViewer.getInstance().printWeekSchedule(weekDate);
-                    System.out.println("This is your specified week schedule");
-                    if (writeToFileAfterViewing(scanner)){
-                        handleUserSaveToFileName(scanner, viewedTasks);
+                    if (DateCalculator.isValidDate(weekDate)){
+                        scnr.nextLine();  // consume newline left-over
+                        List<Task> viewedTasks = ScheduleViewer.getInstance().printWeekSchedule(weekDate);
+                        System.out.println("This is your specified week schedule");
+                        if (writeToFileAfterViewing(scanner)){
+                            handleUserSaveToFileName(scanner, viewedTasks);
+                        }
                     }
                     System.out.println("-----------------------");
                     System.out.println();
@@ -169,7 +173,7 @@ public class Client {
                         scnr.nextLine();  // Consume any leftover newline characters in the buffer
                     }
                     String yearMonthInput = scnr.nextLine().trim();  // Read the actual input
-                
+
                     if (yearMonthInput.length() == 6) {
                         try {
                             int year = Integer.parseInt(yearMonthInput.substring(0, 4));
@@ -228,28 +232,49 @@ public class Client {
 
             task.setType(type);
 
-            System.out.print("Enter start date (YYYYMMDD): ");
-            task.setStartDate(scanner.nextInt());
-            scanner.nextLine(); // Consume newline
+            int startDate = 0;
+            do {
+                System.out.print("Enter start date (YYYYMMDD): ");
+                startDate = scanner.nextInt();
+                scanner.nextLine(); // Consume newline
+            } while (!DateCalculator.isValidDate(startDate));
+            task.setStartDate(startDate);
 
-            System.out.print("Enter start time (24-hour format): ");
-            task.setStartTime(scanner.nextFloat());
-            scanner.nextLine(); // Consume newline
 
-            System.out.print("Enter duration (in hours): ");
-            task.setDuration(scanner.nextFloat());
-            scanner.nextLine(); // Consume newline
+            float startTime;
+            do {
+                System.out.print("Enter start time (24-hour format): ");
+                startTime = scanner.nextFloat();
+                startTime = roundClock(startTime);
+                scanner.nextLine(); // Consume newline
+            } while (!isValidClock(startTime));
+            task.setStartTime(startTime);
+
+            float duration;
+            do {
+                System.out.print("Enter duration (in hours): ");
+                duration = scanner.nextFloat();
+                scanner.nextLine(); // Consume newline
+            } while (!isValidClock(duration));
+            task.setDuration(duration);
 
             // Additional inputs based on task type
-            if (task instanceof RecurringTask) {
-                RecurringTask recurringTask = (RecurringTask) task;
-                System.out.print("Enter end date (YYYYMMDD): ");
-                recurringTask.setEndDate(scanner.nextInt());
-                scanner.nextLine(); // Consume newline
+            if (TaskFactory.getTranslation(type).equals("RecurringTask")) {
+                int endDate;
+                do {
+                    System.out.print("Enter end date (YYYYMMDD): ");
+                    endDate = scanner.nextInt();
+                    scanner.nextLine(); // Consume newline
+                } while (!DateCalculator.isValidDate(endDate) || endDate < startDate);
+                task.setEndDate(endDate);
 
-                System.out.print("Enter frequency (days between occurrences): ");
-                recurringTask.setFrequency(scanner.nextInt());
-                scanner.nextLine(); // Consume newline
+                int frequency;
+                do {
+                    System.out.print("Enter frequency (days between occurrences): ");
+                    frequency = scanner.nextInt();
+                    scanner.nextLine(); // Consume newline
+                } while (!isValidFrequency(frequency));
+                task.setFrequency(frequency);
             }
         } else {
             System.out.println("Failed to create task. Task type not recognized.");
@@ -276,5 +301,25 @@ public class Client {
         } else {
             return false;
         }
+    }
+
+    private static boolean isValidClock(float time){
+        if (time >= 0 && time <= 23.75){
+            return true;
+        }
+        System.out.println("Invalid time!");
+        return false;
+    }
+
+    private static float roundClock(float time){
+        return Math.round(time * 4) / 4;
+    }
+
+    private static boolean isValidFrequency(int frequency){
+        if (frequency == 1 || frequency == 7){
+            return true;
+        }
+        System.out.println("Invalid Frequency!");
+        return false;
     }
 }

@@ -82,4 +82,31 @@ public class DateCalculator {
         }
         return monthString + month;
     }
+
+    public static boolean isValidDate(int date){
+        Calendar calendar = new GregorianCalendar();
+        String dateString = String.valueOf(date);
+
+        //FIXME Note: Calendar uses 0-11 Format for Month when setting date
+        // Uses 1-31 for Day
+        try {
+            calendar.set(
+                    Integer.parseInt(dateString.substring(0, 4)),
+                    Integer.parseInt(dateString.substring(4, 6)) - 1,
+                    Integer.parseInt(dateString.substring(6, 8)));
+
+            int month = Integer.parseInt(dateString.substring(4, 6)) - 1;
+            int day = Integer.parseInt(dateString.substring(6, 8));
+
+            if (month >= 0 && month <= 11) {
+                if (day >= 1 && day <= calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
+                    return true;
+                }
+            }
+        } catch (Exception e){
+            // Calendar instantiation failed.
+        }
+        System.out.println("Not a valid date!");
+        return false;
+    }
 }
