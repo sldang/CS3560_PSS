@@ -255,7 +255,7 @@ public class Client {
                 System.out.print("Enter duration (in hours): ");
                 duration = scanner.nextFloat();
                 scanner.nextLine(); // Consume newline
-            } while (!isValidClock(duration));
+            } while (!isValidClock(duration) && duration > 0);
             task.setDuration(duration);
 
             // Additional inputs based on task type
